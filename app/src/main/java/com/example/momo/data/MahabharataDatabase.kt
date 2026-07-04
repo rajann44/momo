@@ -368,7 +368,7 @@ object MahabharataDatabase {
     }
 
     fun getContentForDay(day: Int): MahabharataDayContent {
-        val clampedDay = day.coerceIn(1, 30)
-        return dailyContent[clampedDay - 1]
+        val loopedDay = ((day - 1) % 30) + 1
+        return dailyContent[loopedDay - 1]
     }
 }
