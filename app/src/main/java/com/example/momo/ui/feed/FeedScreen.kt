@@ -115,15 +115,6 @@ fun FeedScreen(
                 )
             },
             actions = {
-                IconButton(onClick = { onItemClick(AIReelAssistant) }) {
-                    Icon(
-                        imageVector = Icons.Default.AutoAwesome,
-                        contentDescription = "AI Reels Assistant"
-                    )
-                }
-                IconButton(onClick = { /* Create post */ }) {
-                    Icon(imageVector = Icons.Default.AddBox, contentDescription = "Create Post")
-                }
                 IconButton(onClick = { /* Notifications */ }) {
                     Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "Notifications")
                 }
