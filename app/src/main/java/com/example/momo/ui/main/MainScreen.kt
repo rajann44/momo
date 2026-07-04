@@ -12,11 +12,13 @@ import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -111,21 +113,14 @@ fun MainScreen(
                     selected = selectedTab == 3,
                     onClick = { selectedTab = 3 },
                     icon = {
-                        AsyncImage(
-                            model = DummyData.currentUser.avatarUrl,
-                            contentDescription = stringResource(id = R.string.nav_profile),
-                            modifier = Modifier
-                                .size(24.dp)
-                                .clip(CircleShape)
-                                .border(
-                                    width = if (selectedTab == 3) 1.5.dp else 0.dp,
-                                    color = itemColor,
-                                    shape = CircleShape
-                                ),
-                            contentScale = ContentScale.Crop
+                        Icon(
+                            imageVector = if (selectedTab == 3) Icons.Filled.Person else Icons.Outlined.Person,
+                            contentDescription = stringResource(id = R.string.nav_profile)
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = itemColor,
+                        unselectedIconColor = itemColor.copy(alpha = 0.6f),
                         indicatorColor = Color.Transparent
                     )
                 )
