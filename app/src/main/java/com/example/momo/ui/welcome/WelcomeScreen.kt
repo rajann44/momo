@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.momo.R
 
 @Composable
 fun WelcomeScreen(
@@ -68,7 +70,7 @@ fun WelcomeScreen(
             )
 
             Text(
-                text = "Momo",
+                text = stringResource(id = R.string.app_name),
                 style = TextStyle(
                     brush = titleGradient,
                     fontSize = 54.sp,
@@ -83,7 +85,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Your Mahabharata Spiritual Journey",
+                text = stringResource(id = R.string.welcome_title),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFFFFD700).copy(alpha = 0.85f),
@@ -94,7 +96,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "A 30-day journey of wisdom, duty, and self-realization.",
+                text = stringResource(id = R.string.welcome_subtitle),
                 fontSize = 13.sp,
                 color = Color.White.copy(alpha = 0.5f),
                 textAlign = TextAlign.Center,
@@ -125,7 +127,7 @@ fun WelcomeScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "WHAT TO EXPECT",
+                        text = stringResource(id = R.string.what_to_expect),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFFFD700),
@@ -134,26 +136,26 @@ fun WelcomeScreen(
 
                     InfoRow(
                         icon = Icons.Default.MenuBook,
-                        title = "Daily Gita Verses",
-                        description = "Meditate on Sanskrit verses & translations directly from the battlefield of Kurukshetra."
+                        title = stringResource(id = R.string.expect_gita_title),
+                        description = stringResource(id = R.string.expect_gita_desc)
                     )
 
                     InfoRow(
                         icon = Icons.Default.AutoAwesome,
-                        title = "Epic Narrative Posts",
-                        description = "Scroll a daily-changing feed of posts from Yudhisthira, Arjuna, Karna, Shakuni, and Lord Krishna."
+                        title = stringResource(id = R.string.expect_posts_title),
+                        description = stringResource(id = R.string.expect_posts_desc)
                     )
 
                     InfoRow(
                         icon = Icons.Default.Chat,
-                        title = "Guided Dialogues",
-                        description = "Receive personalized messages and advice from characters in your inbox."
+                        title = stringResource(id = R.string.expect_chats_title),
+                        description = stringResource(id = R.string.expect_chats_desc)
                     )
 
                     InfoRow(
                         icon = Icons.Default.Bookmark,
-                        title = "Saved Teachings",
-                        description = "Bookmark shlokas and guidance to build your own profile of eternal wisdom."
+                        title = stringResource(id = R.string.expect_saved_title),
+                        description = stringResource(id = R.string.expect_saved_desc)
                     )
                 }
             }
@@ -176,7 +178,7 @@ fun WelcomeScreen(
                 shape = RoundedCornerShape(50.dp)
             ) {
                 Text(
-                    text = "Begin Journey",
+                    text = stringResource(id = R.string.btn_begin_journey),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.5.sp
@@ -186,7 +188,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Perform your duty with a calm mind.",
+                text = stringResource(id = R.string.welcome_footer),
                 fontSize = 12.sp,
                 fontStyle = FontStyle.Italic,
                 color = Color.White.copy(alpha = 0.35f),

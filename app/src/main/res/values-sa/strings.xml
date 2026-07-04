@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">मोमो</string>
+    <string name="welcome_title">तव महाभारत आध्यात्मिकयात्रा</string>
+    <string name="welcome_subtitle">ज्ञानस्य, कर्तव्यस्य, आत्मसाक्षात्कारस्य च त्रिंशत्-दिवसीया यात्रा।</string>
+    <string name="btn_begin_journey">यात्रां आरभत</string>
+    <string name="what_to_expect">किं अपेक्षणीयम्</string>
+    <string name="expect_gita_title">नित्य गीता श्लोकाः</string>
+    <string name="expect_gita_desc">कुरुक्षेत्रे युद्धक्षेत्रात् साक्षात् संस्कृत श्लोकानां अनुवादानां च ध्यानं कुरुत।</string>
+    <string name="expect_posts_title">आख्यान संदेशाः</string>
+    <string name="expect_posts_desc">युधिष्ठिर-अर्जुन-कर्ण-शकुनि-श्रीकृष्णैः प्रेषितान् संदेशान् प्रतिदिनं पश्यत।</string>
+    <string name="expect_chats_title">निर्देशित संवादाः</string>
+    <string name="expect_chats_desc">पात्रैः साक्षात् तव पत्रपेटिकायां प्रेषितान् मार्गदर्शन संदेशान् प्राप्नुत।</string>
+    <string name="expect_saved_title">संरक्षिताः उपदेशाः</string>
+    <string name="expect_saved_desc">शाश्वत ज्ञानस्य तव वृत्तपत्रं निर्मातुं श्लोकान् मार्गदर्शनानि च संरक्षत।</string>
+    <string name="welcome_footer">योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय।</string>
+    <string name="nav_home">गृहम्</string>
+    <string name="nav_explore">अन्वेषणम्</string>
+    <string name="nav_messages">संदेशाः</string>
+    <string name="nav_profile">स्वकीर्यम्</string>
+</resources>

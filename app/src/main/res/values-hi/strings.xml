@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">मोमो</string>
+    <string name="welcome_title">आपकी महाभारत आध्यात्मिक यात्रा</string>
+    <string name="welcome_subtitle">ज्ञान, कर्तव्य और आत्म-साक्षात्कार की 30-दिवसीय यात्रा।</string>
+    <string name="btn_begin_journey">यात्रा प्रारंभ करें</string>
+    <string name="what_to_expect">क्या अपेक्षा करें</string>
+    <string name="expect_gita_title">दैनिक गीता श्लोक</string>
+    <string name="expect_gita_desc">कुरुक्षेत्र के युद्धक्षेत्र से सीधे संस्कृत श्लोक और अनुवाद पर ध्यान केंद्रित करें।</string>
+    <string name="expect_posts_title">महाकाव्य कथा पोस्ट</string>
+    <string name="expect_posts_desc">युधिष्ठिर, अर्जुन, कर्ण, शकुनि और भगवान कृष्ण के पोस्टों की दैनिक बदलती फ़ीड स्क्रॉल करें।</string>
+    <string name="expect_chats_title">निर्देशित संवाद</string>
+    <string name="expect_chats_desc">अपने इनबॉक्स में सीधे पात्रों से व्यक्तिगत संदेश और सलाह प्राप्त करें।</string>
+    <string name="expect_saved_title">सहेजे गए उपदेश</string>
+    <string name="expect_saved_desc">शाश्वत ज्ञान की अपनी प्रोफ़ाइल बनाने के लिए श्लोक और मार्गदर्शन सहेजें।</string>
+    <string name="welcome_footer">शांत मन से अपना कर्तव्य निभाएं।</string>
+    <string name="nav_home">मुख्य</string>
+    <string name="nav_explore">खोजें</string>
+    <string name="nav_messages">संवाद</string>
+    <string name="nav_profile">स्वयं</string>
+</resources>

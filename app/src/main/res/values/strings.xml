@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Momo</string>
+    <string name="welcome_title">Your Mahabharata Spiritual Journey</string>
+    <string name="welcome_subtitle">A 30-day journey of wisdom, duty, and self-realization.</string>
+    <string name="btn_begin_journey">Begin Journey</string>
+    <string name="what_to_expect">WHAT TO EXPECT</string>
+    <string name="expect_gita_title">Daily Gita Verses</string>
+    <string name="expect_gita_desc">Meditate on Sanskrit verses &amp; translations directly from the battlefield of Kurukshetra.</string>
+    <string name="expect_posts_title">Epic Narrative Posts</string>
+    <string name="expect_posts_desc">Scroll a daily-changing feed of posts from Yudhisthira, Arjuna, Karna, Shakuni, and Lord Krishna.</string>
+    <string name="expect_chats_title">Guided Dialogues</string>
+    <string name="expect_chats_desc">Receive personalized messages and advice from characters in your inbox.</string>
+    <string name="expect_saved_title">Saved Teachings</string>
+    <string name="expect_saved_desc">Bookmark shlokas and guidance to build your own profile of eternal wisdom.</string>
+    <string name="welcome_footer">Perform your duty with a calm mind.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_profile">Profile</string>
 </resources>

@@ -23,6 +23,8 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.ui.res.stringResource
+import com.example.momo.R
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -63,7 +65,7 @@ fun MainScreen(
                     icon = {
                         Icon(
                             imageVector = if (selectedTab == 0) Icons.Filled.Home else Icons.Outlined.Home,
-                            contentDescription = "Home"
+                            contentDescription = stringResource(id = R.string.nav_home)
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
@@ -79,7 +81,7 @@ fun MainScreen(
                     icon = {
                         Icon(
                             imageVector = if (selectedTab == 1) Icons.Filled.Search else Icons.Outlined.Search,
-                            contentDescription = "Explore"
+                            contentDescription = stringResource(id = R.string.nav_explore)
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
@@ -95,7 +97,7 @@ fun MainScreen(
                     icon = {
                         Icon(
                             imageVector = if (selectedTab == 2) Icons.Filled.Send else Icons.Outlined.Send,
-                            contentDescription = "Messages"
+                            contentDescription = stringResource(id = R.string.nav_messages)
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
@@ -111,7 +113,7 @@ fun MainScreen(
                     icon = {
                         AsyncImage(
                             model = DummyData.currentUser.avatarUrl,
-                            contentDescription = "Profile",
+                            contentDescription = stringResource(id = R.string.nav_profile),
                             modifier = Modifier
                                 .size(24.dp)
                                 .clip(CircleShape)
