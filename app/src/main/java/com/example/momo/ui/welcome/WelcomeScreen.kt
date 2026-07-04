@@ -347,7 +347,6 @@ fun WelcomeScreen(
                 var name by remember { mutableStateOf(DummyData.currentUser.name) }
                 var username by remember { mutableStateOf(DummyData.currentUser.username) }
                 var bio by remember { mutableStateOf(DummyData.currentUser.bio) }
-                var website by remember { mutableStateOf(DummyData.currentUser.website) }
 
                 Column(
                     modifier = Modifier
@@ -413,17 +412,6 @@ fun WelcomeScreen(
                         shape = RoundedCornerShape(10.dp),
                         maxLines = 3
                     )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    OutlinedTextField(
-                        value = website,
-                        onValueChange = { website = it },
-                        label = { Text("Website") },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors,
-                        shape = RoundedCornerShape(10.dp)
-                    )
                 }
 
                 // Finish / Begin Journey Button
@@ -433,7 +421,7 @@ fun WelcomeScreen(
                 ) {
                     Button(
                         onClick = {
-                            DummyData.saveUserProfile(context, name, username, bio, website)
+                            DummyData.saveUserProfile(context, name, username, bio, "")
                             onGetStartedClick()
                         },
                         modifier = Modifier

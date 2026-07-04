@@ -68,12 +68,19 @@ import coil.compose.AsyncImage
 import com.example.momo.ui.components.SpiritualAvatar
 import com.example.momo.ui.components.SpiritualArt
 import androidx.compose.ui.platform.LocalContext
+import android.content.Context
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import com.example.momo.PostDetail
 import com.example.momo.ChatDetail
 import com.example.momo.data.DummyData
 import com.example.momo.data.User
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.ui.res.stringResource
+import com.example.momo.R
 import com.example.momo.data.MahabharataDatabase
 import com.example.momo.data.Post
 
@@ -87,6 +94,8 @@ fun ProfileScreen(
     isPersonalProfile: Boolean = false
 ) {
     var refreshTrigger by remember { mutableStateOf(0) }
+    var showSettingsMenu by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
     val user = remember(userId, refreshTrigger) { DummyData.getUserById(userId) }
     var isEditing by remember { mutableStateOf(false) }
     val userPosts = remember(userId) {
@@ -151,12 +160,28 @@ fun ProfileScreen(
                 }
             },
             actions = {
-                IconButton(onClick = { /* Profile settings/options */ }) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = "Options",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
+                if (isPersonalProfile) {
+                    Box {
+                        IconButton(onClick = { showSettingsMenu = true }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "Options",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showSettingsMenu,
+                            onDismissRequest = { showSettingsMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Select Language / भाषा बदलें") },
+                                onClick = {
+                                    showLanguageDialog = true
+                                    showSettingsMenu = false
+                                }
+                            )
+                        }
+                    }
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.85f))
@@ -211,6 +236,7 @@ fun ProfileScreen(
                                         onClick = {
                                             if (DummyData.activeDay > 1) {
                                                 DummyData.saveDay(context, DummyData.activeDay - 1)
+                                                refreshTrigger++
                                             }
                                         },
                                         enabled = DummyData.activeDay > 1
@@ -221,6 +247,7 @@ fun ProfileScreen(
                                         onClick = {
                                             if (DummyData.activeDay < 30) {
                                                 DummyData.saveDay(context, DummyData.activeDay + 1)
+                                                refreshTrigger++
                                             }
                                         },
                                         enabled = DummyData.activeDay < 30
@@ -280,23 +307,7 @@ fun ProfileScreen(
                         lineHeight = 18.sp,
                         style = androidx.compose.ui.text.TextStyle(fontStyle = if (isBioEmpty) androidx.compose.ui.text.font.FontStyle.Italic else androidx.compose.ui.text.font.FontStyle.Normal)
                     )
-                    if (user.website.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = user.website,
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF00376B) // Dark blue link color
-                        )
-                    } else if (isPersonalProfile) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "No website added.",
-                            fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                            style = androidx.compose.ui.text.TextStyle(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
-                        )
-                    }
+                    // Website display removed
 
                     Spacer(modifier = Modifier.height(18.dp))
 
@@ -466,7 +477,6 @@ fun ProfileScreen(
         var editName by remember { mutableStateOf(user.name) }
         var editUsername by remember { mutableStateOf(user.username) }
         var editBio by remember { mutableStateOf(user.bio) }
-        var editWebsite by remember { mutableStateOf(user.website) }
         val context = LocalContext.current
 
         AlertDialog(
@@ -495,13 +505,6 @@ fun ProfileScreen(
                         maxLines = 3,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(
-                        value = editWebsite,
-                        onValueChange = { editWebsite = it },
-                        label = { Text("Website") },
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
                 }
             },
             confirmButton = {
@@ -512,7 +515,7 @@ fun ProfileScreen(
                             name = editName,
                             username = editUsername,
                             bio = editBio,
-                            website = editWebsite
+                            website = ""
                         )
                         refreshTrigger++
                         isEditing = false
@@ -523,6 +526,69 @@ fun ProfileScreen(
             },
             dismissButton = {
                 TextButton(onClick = { isEditing = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    if (showLanguageDialog) {
+        val context = LocalContext.current
+        val prefs = remember { context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE) }
+        var currentLang by remember { mutableStateOf(prefs.getString("app_language", "en") ?: "en") }
+
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            title = { Text("Select Language / भाषा चुनें", fontWeight = FontWeight.Bold) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    val languages = listOf(
+                        "en" to "English",
+                        "hi" to "हिन्दी",
+                        "sa" to "संस्कृतम्"
+                    )
+                    languages.forEach { (code, name) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    currentLang = code
+                                }
+                                .padding(vertical = 8.dp, horizontal = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = currentLang == code,
+                                onClick = { currentLang = code }
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(text = name, fontSize = 16.sp)
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val locale = java.util.Locale(currentLang)
+                        java.util.Locale.setDefault(locale)
+                        val resources = context.resources
+                        val configuration = resources.configuration
+                        configuration.setLocale(locale)
+                        resources.updateConfiguration(configuration, resources.displayMetrics)
+
+                        // Save selection
+                        prefs.edit().putString("app_language", currentLang).apply()
+                        
+                        showLanguageDialog = false
+                        refreshTrigger++
+                    }
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
                     Text("Cancel")
                 }
             }
