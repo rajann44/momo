@@ -17,4 +17,24 @@
     <string name="nav_explore">खोजें</string>
     <string name="nav_messages">संवाद</string>
     <string name="nav_profile">स्वयं</string>
+    <string name="btn_next">आगे</string>
+    <string name="profile_setup_title">साधक प्रोफ़ाइल सेटअप करें</string>
+    <string name="profile_setup_subtitle">इस आध्यात्मिक खोज के लिए अपनी पहचान अनुकूलित करें।</string>
+    <string name="field_display_name">प्रदर्शित नाम</string>
+    <string name="field_username">उपयोगकर्ता नाम</string>
+    <string name="field_bio">आध्यात्मिक विवरण</string>
+    <string name="dev_panel_title">महाभारत देव पैनल</string>
+    <string name="current_day">वर्तमान दिन</string>
+    <string name="saved_teachings_header">सहेजे गए उपदेश</string>
+    <string name="edit_profile">प्रोफ़ाइल संपादित करें</string>
+    <string name="btn_save">सहेजें</string>
+    <string name="btn_cancel">रद्द करें</string>
+    <string name="no_saved_teachings">कोई सहेजे गए उपदेश नहीं</string>
+    <string name="no_saved_teachings_desc">उन्हें यहाँ सहेजने के लिए अपनी फ़ीड से श्लोक या मार्गदर्शन बुकमार्क करें।</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="lbl_name">नाम</string>
+    <string name="share_profile">प्रोफ़ाइल साझा करें</string>
+    <string name="following">फ़ॉलो कर रहे हैं</string>
+    <string name="btn_follow">फ़ॉलो करें</string>
+    <string name="btn_message">संदेश</string>
 </resources>

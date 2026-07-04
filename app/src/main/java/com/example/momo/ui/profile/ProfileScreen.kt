@@ -174,7 +174,7 @@ fun ProfileScreen(
                             onDismissRequest = { showSettingsMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Select Language / भाषा बदलें") },
+                                text = { Text(stringResource(id = R.string.select_language)) },
                                 onClick = {
                                     showLanguageDialog = true
                                     showSettingsMenu = false
@@ -214,7 +214,7 @@ fun ProfileScreen(
                                 modifier = Modifier.padding(14.dp)
                             ) {
                                 Text(
-                                    text = "MAHABHARATA DEV PANEL",
+                                    text = stringResource(id = R.string.dev_panel_title),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary,
@@ -226,7 +226,7 @@ fun ProfileScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
-                                        text = "Current Day: ${DummyData.activeDay}",
+                                        text = "${stringResource(id = R.string.current_day)}: ${DummyData.activeDay}",
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Bold,
                                         modifier = Modifier.weight(1f)
@@ -318,12 +318,12 @@ fun ProfileScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             ProfileActionButton(
-                                text = "Edit Profile",
+                                text = stringResource(id = R.string.edit_profile),
                                 onClick = { isEditing = true },
                                 modifier = Modifier.weight(1f)
                             )
                             ProfileActionButton(
-                                text = "Share Profile",
+                                text = stringResource(id = R.string.share_profile),
                                 onClick = { /* Share */ },
                                 modifier = Modifier.weight(1f)
                             )
@@ -337,7 +337,7 @@ fun ProfileScreen(
                             // Follow Button
                             if (isFollowingState) {
                                 ProfileActionButton(
-                                    text = "Following",
+                                    text = stringResource(id = R.string.following),
                                     onClick = { isFollowingState = false },
                                     modifier = Modifier.weight(1f)
                                 )
@@ -351,12 +351,12 @@ fun ProfileScreen(
                                         .height(36.dp),
                                     contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)
                                 ) {
-                                    Text("Follow", color = Color.White, fontSize = 13.5.sp, fontWeight = FontWeight.Bold)
+                                    Text(stringResource(id = R.string.btn_follow), color = Color.White, fontSize = 13.5.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
 
                             ProfileActionButton(
-                                text = "Message",
+                                text = stringResource(id = R.string.btn_message),
                                 onClick = { onItemClick(ChatDetail(user.id)) },
                                 modifier = Modifier.weight(1f)
                             )
@@ -398,7 +398,7 @@ fun ProfileScreen(
                         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Saved Teachings",
+                            text = stringResource(id = R.string.saved_teachings_header),
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -426,14 +426,14 @@ fun ProfileScreen(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "No Saved Teachings",
+                            text = stringResource(id = R.string.no_saved_teachings),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = "Tap the bookmark icon on any post in the feed to save the wisdom of Mahabharata here.",
+                            text = stringResource(id = R.string.no_saved_teachings_desc),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -481,27 +481,27 @@ fun ProfileScreen(
 
         AlertDialog(
             onDismissRequest = { isEditing = false },
-            title = { Text(text = "Edit Profile", fontWeight = FontWeight.Bold) },
+            title = { Text(text = stringResource(id = R.string.edit_profile), fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(
                         value = editName,
                         onValueChange = { editName = it },
-                        label = { Text("Name") },
+                        label = { Text(stringResource(id = R.string.lbl_name)) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
                         value = editUsername,
                         onValueChange = { editUsername = it },
-                        label = { Text("Username") },
+                        label = { Text(stringResource(id = R.string.field_username)) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
                         value = editBio,
                         onValueChange = { editBio = it },
-                        label = { Text("Bio") },
+                        label = { Text(stringResource(id = R.string.field_bio)) },
                         maxLines = 3,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -521,12 +521,12 @@ fun ProfileScreen(
                         isEditing = false
                     }
                 ) {
-                    Text("Save")
+                    Text(stringResource(id = R.string.btn_save))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { isEditing = false }) {
-                    Text("Cancel")
+                    Text(stringResource(id = R.string.btn_cancel))
                 }
             }
         )
@@ -539,7 +539,7 @@ fun ProfileScreen(
 
         AlertDialog(
             onDismissRequest = { showLanguageDialog = false },
-            title = { Text("Select Language / भाषा चुनें", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(id = R.string.select_language), fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     val languages = listOf(

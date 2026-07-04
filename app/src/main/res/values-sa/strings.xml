@@ -17,4 +17,24 @@
     <string name="nav_explore">अन्वेषणम्</string>
     <string name="nav_messages">संदेशाः</string>
     <string name="nav_profile">स्वकीर्यम्</string>
+    <string name="btn_next">अग्रिमः</string>
+    <string name="profile_setup_title">साधकविवरणं सज्जीकुरुत</string>
+    <string name="profile_setup_subtitle">अस्य आध्यात्मिकमार्गस्य कृते तव परिचयं रचयात।</string>
+    <string name="field_display_name">प्रदर्शन नाम</string>
+    <string name="field_username">उपयोक्तृनाम</string>
+    <string name="field_bio">आध्यात्मिक परिचयः</string>
+    <string name="dev_panel_title">महाभारत देव पटलः</string>
+    <string name="current_day">वर्तमानदिनम्</string>
+    <string name="saved_teachings_header">संरक्षिताः उपदेशाः</string>
+    <string name="edit_profile">स्वकीयविवरणं सम्पादयत</string>
+    <string name="btn_save">संरक्षत</string>
+    <string name="btn_cancel">रद्दं कुरुत</string>
+    <string name="no_saved_teachings">न कोऽपि रक्षितः उपदेशः</string>
+    <string name="no_saved_teachings_desc">तान् अत्र संरक्षितुं तव संदेशप्रवाहात् श्लोकान् मार्गदर्शनानि च चिह्नीकुरुत।</string>
+    <string name="select_language">भाषां वृणुत</string>
+    <string name="lbl_name">नाम</string>
+    <string name="share_profile">विवरणं वितरत</string>
+    <string name="following">अनुकरोति</string>
+    <string name="btn_follow">अनुसरन्तु</string>
+    <string name="btn_message">संदेशः</string>
 </resources>

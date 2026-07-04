@@ -237,7 +237,7 @@ fun WelcomeScreen(
                     shape = RoundedCornerShape(50.dp)
                 ) {
                     Text(
-                        text = "Next",
+                        text = stringResource(id = R.string.btn_next),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -357,14 +357,14 @@ fun WelcomeScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Setup Seeker Profile",
+                        text = stringResource(id = R.string.profile_setup_title),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "Customize your identity for this spiritual quest.",
+                        text = stringResource(id = R.string.profile_setup_subtitle),
                         fontSize = 13.sp,
                         color = Color.White.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center
@@ -384,7 +384,7 @@ fun WelcomeScreen(
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
-                        label = { Text("Display Name") },
+                        label = { Text(stringResource(id = R.string.field_display_name)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = textFieldColors,
                         shape = RoundedCornerShape(10.dp)
@@ -395,7 +395,7 @@ fun WelcomeScreen(
                     OutlinedTextField(
                         value = username,
                         onValueChange = { username = it },
-                        label = { Text("Username") },
+                        label = { Text(stringResource(id = R.string.field_username)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = textFieldColors,
                         shape = RoundedCornerShape(10.dp)
@@ -406,7 +406,7 @@ fun WelcomeScreen(
                     OutlinedTextField(
                         value = bio,
                         onValueChange = { bio = it },
-                        label = { Text("Spiritual Bio") },
+                        label = { Text(stringResource(id = R.string.field_bio)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = textFieldColors,
                         shape = RoundedCornerShape(10.dp),

@@ -17,4 +17,24 @@
     <string name="nav_explore">Explore</string>
     <string name="nav_messages">Messages</string>
     <string name="nav_profile">Profile</string>
+    <string name="btn_next">Next</string>
+    <string name="profile_setup_title">Setup Seeker Profile</string>
+    <string name="profile_setup_subtitle">Customize your identity for this spiritual quest.</string>
+    <string name="field_display_name">Display Name</string>
+    <string name="field_username">Username</string>
+    <string name="field_bio">Spiritual Bio</string>
+    <string name="dev_panel_title">MAHABHARATA DEV PANEL</string>
+    <string name="current_day">Current Day</string>
+    <string name="saved_teachings_header">Saved Teachings</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="no_saved_teachings">No Saved Teachings</string>
+    <string name="no_saved_teachings_desc">Bookmark shlokas or guidance from your feed to save them here.</string>
+    <string name="select_language">Select Language</string>
+    <string name="lbl_name">Name</string>
+    <string name="share_profile">Share Profile</string>
+    <string name="following">Following</string>
+    <string name="btn_follow">Follow</string>
+    <string name="btn_message">Message</string>
 </resources>
