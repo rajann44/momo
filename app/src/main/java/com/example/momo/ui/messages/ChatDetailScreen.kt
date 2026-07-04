@@ -56,6 +56,10 @@ import com.example.momo.data.Message
 import androidx.navigation3.runtime.NavKey
 import com.example.momo.FriendshipRecap
 import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -98,6 +102,15 @@ fun ChatDetailScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+        val threadTitle = when (userId) {
+            "krishna" -> "Krishna & Arjuna"
+            "arjuna" -> "Yudhishthira & Bhishma"
+            "duryodhana" -> "Duryodhana & Karna"
+            "shakuni" -> "Shakuni & Duryodhana"
+            else -> "${friend.name} & Seeker"
+        }
+        val threadSubtitle = "Sacred Correspondence • Day ${DummyData.activeDay}"
+
         // Chat Header Top Bar
         TopAppBar(
             title = {
@@ -123,26 +136,16 @@ fun ChatDetailScreen(
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.width(10.dp))
                     Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = friend.name,
-                                fontSize = 14.5.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            if (friend.streakCount > 0) {
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "🔥 ${friend.streakCount}",
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color(0xFFF9A15E)
-                                )
-                            }
-                        }
                         Text(
-                            text = if (friend.isOnline) "Active now" else "Offline",
+                            text = threadTitle,
+                            fontSize = 14.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            text = threadSubtitle,
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                         )
@@ -158,47 +161,9 @@ fun ChatDetailScreen(
                     )
                 }
             },
-            actions = {
-                IconButton(onClick = { isWatchTogetherActive = !isWatchTogetherActive }) {
-                    Icon(
-                        imageVector = Icons.Default.LiveTv,
-                        contentDescription = "Watch Together",
-                        tint = if (isWatchTogetherActive) Color(0xFF3897F0) else MaterialTheme.colorScheme.onBackground
-                    )
-                }
-                IconButton(onClick = { /* Call */ }) {
-                    Icon(imageVector = Icons.Default.Call, contentDescription = "Audio Call")
-                }
-                IconButton(onClick = { /* Video Call */ }) {
-                    Icon(imageVector = Icons.Default.Videocam, contentDescription = "Video Call")
-                }
-            },
+            actions = {},
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.85f))
         )
-        
-        // Friendship Recap Banner
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF3897F0).copy(alpha = 0.1f))
-                .clickable { onItemClick(FriendshipRecap(userId = friend.id)) }
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "✨ View your Friendship Recap with ${friend.name}!",
-                fontSize = 13.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF3897F0),
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = "View",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF3897F0)
-            )
-        }
         
         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
 
@@ -401,15 +366,15 @@ fun ChatDetailScreen(
                 item { Spacer(modifier = Modifier.height(8.dp)) }
                 
                 items(chatMessages, key = { it.id }) { message ->
-                    val isCurrentUser = message.user.id == DummyData.currentUser.id
+                    val isRightSide = message.isFromMe
                     
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = if (isCurrentUser) Arrangement.End else Arrangement.Start
+                        horizontalArrangement = if (isRightSide) Arrangement.End else Arrangement.Start
                     ) {
-                        if (!isCurrentUser) {
+                        if (!isRightSide) {
                             SpiritualAvatar(
-                                avatarUrl = friend.avatarUrl,
+                                avatarUrl = message.user.avatarUrl,
                                 modifier = Modifier
                                     .size(28.dp)
                                     .clip(CircleShape)
@@ -418,7 +383,7 @@ fun ChatDetailScreen(
                         }
                         
                         Column(
-                            horizontalAlignment = if (isCurrentUser) Alignment.End else Alignment.Start
+                            horizontalAlignment = if (isRightSide) Alignment.End else Alignment.Start
                         ) {
                             Box(
                                 modifier = Modifier
@@ -426,12 +391,12 @@ fun ChatDetailScreen(
                                         RoundedCornerShape(
                                             topStart = 16.dp,
                                             topEnd = 16.dp,
-                                            bottomStart = if (isCurrentUser) 16.dp else 4.dp,
-                                            bottomEnd = if (isCurrentUser) 4.dp else 16.dp
+                                            bottomStart = if (isRightSide) 16.dp else 4.dp,
+                                            bottomEnd = if (isRightSide) 4.dp else 16.dp
                                         )
                                     )
                                     .background(
-                                        if (isCurrentUser) Color(0xFFFF8C00) // Premium saffron bubble
+                                        if (isRightSide) Color(0xFFFF8C00) // Premium saffron bubble
                                         else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f) // Grey bubble
                                     )
                                     .padding(horizontal = 14.dp, vertical = 10.dp)
@@ -439,7 +404,7 @@ fun ChatDetailScreen(
                                 Text(
                                     text = message.text,
                                     fontSize = 14.sp,
-                                    color = if (isCurrentUser) Color.White else MaterialTheme.colorScheme.onBackground,
+                                    color = if (isRightSide) Color.White else MaterialTheme.colorScheme.onBackground,
                                     lineHeight = 19.sp
                                 )
                             }
@@ -460,57 +425,40 @@ fun ChatDetailScreen(
 
         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
 
-        // Bottom Message Input Row
-        Row(
+        // Bottom Message Input Row replaced with historical archive notice
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            TextField(
-                value = newMessageText,
-                onValueChange = { newMessageText = it },
-                placeholder = {
-                    Text(
-                        text = "Message...",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        modifier = Modifier.size(16.dp)
                     )
-                },
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(24.dp)),
-                singleLine = false,
-                maxLines = 4,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-                    unfocusedContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                )
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = "Send",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (newMessageText.trim().isNotEmpty()) Color(0xFFFF8C00) else Color(0xFFFF8C00).copy(alpha = 0.4f),
-                modifier = Modifier
-                    .clickable(enabled = newMessageText.trim().isNotEmpty()) {
-                        chatMessages.add(
-                            Message(
-                                id = "c_msg_${System.currentTimeMillis()}",
-                                user = DummyData.currentUser,
-                                text = newMessageText.trim(),
-                                timeAgo = "Now"
-                            )
-                        )
-                        newMessageText = ""
-                    }
-                    .padding(8.dp)
-            )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "This is a historical archive of their sacred correspondence.",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+            }
         }
     }
 }

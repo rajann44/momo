@@ -115,18 +115,29 @@ object DummyData {
             )
         }
 
+    fun getThreadPartnerId(charId: String): String {
+        return when (charId) {
+            "krishna" -> "arjuna"
+            "arjuna" -> "bhishma"
+            "duryodhana" -> "karna"
+            "shakuni" -> "duryodhana"
+            else -> "current_user"
+        }
+    }
+
     val messages: List<Message>
         get() {
             val content = MahabharataDatabase.getContentForDay(activeDay)
-            // Show the last message from each conversation thread in the inbox list
             return content.dms.map { (charId, msgList) ->
                 val lastMsg = msgList.last()
+                val partnerId = getThreadPartnerId(charId)
+                val sender = if (lastMsg.isFromMe) getUserById(partnerId) else getUserById(charId)
                 Message(
                     id = lastMsg.id,
                     user = getUserById(charId),
-                    text = lastMsg.text,
+                    text = "${sender.name}: ${lastMsg.text}",
                     timeAgo = lastMsg.timeAgo,
-                    isUnread = !lastMsg.isFromMe,
+                    isUnread = false,
                     isFromMe = lastMsg.isFromMe
                 )
             }
@@ -135,10 +146,12 @@ object DummyData {
     fun getConversationWith(charId: String): List<Message> {
         val content = MahabharataDatabase.getContentForDay(activeDay)
         val msgList = content.dms[charId] ?: emptyList()
+        val partnerId = getThreadPartnerId(charId)
         return msgList.map { m ->
+            val sender = if (m.isFromMe) getUserById(partnerId) else getUserById(charId)
             Message(
                 id = m.id,
-                user = getUserById(m.characterId),
+                user = sender,
                 text = m.text,
                 timeAgo = m.timeAgo,
                 isUnread = false,

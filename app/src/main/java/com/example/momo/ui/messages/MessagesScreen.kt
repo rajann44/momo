@@ -76,31 +76,11 @@ fun MessagesScreen(
         // Top App Bar
         TopAppBar(
             title = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { /* Switch accounts */ }
-                ) {
-                    Text(
-                        text = DummyData.currentUser.username,
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Switch account",
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { /* New message */ }) {
-                    Icon(
-                        imageVector = Icons.Default.Create,
-                        contentDescription = "New Message",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }
+                Text(
+                    text = "Sacred Correspondence",
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.Bold
+                )
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.85f))
         )
@@ -300,8 +280,15 @@ fun MessageInboxItem(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val threadTitle = when (message.user.id) {
+                    "krishna" -> "Krishna & Arjuna"
+                    "arjuna" -> "Yudhishthira & Bhishma"
+                    "duryodhana" -> "Duryodhana & Karna"
+                    "shakuni" -> "Shakuni & Duryodhana"
+                    else -> message.user.name
+                }
                 Text(
-                    text = message.user.username,
+                    text = threadTitle,
                     fontSize = 13.5.sp,
                     fontWeight = if (message.isUnread) FontWeight.Bold else FontWeight.Normal,
                     color = MaterialTheme.colorScheme.onBackground
