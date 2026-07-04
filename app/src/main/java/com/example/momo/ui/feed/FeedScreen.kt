@@ -367,7 +367,8 @@ fun PostItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(380.dp)
-                .clickable { onPostClick(post.id) }
+                .clickable { onPostClick(post.id) },
+            contentAlignment = Alignment.Center
         ) {
             if (post.imageUrl.startsWith("spiritual://")) {
                 val uri = post.imageUrl
@@ -381,6 +382,27 @@ fun PostItem(
                     contentDescription = "Post Image",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
+                )
+            }
+
+            // Text overlay on post image container
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.85f))
+                        )
+                    )
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                Text(
+                    text = post.caption,
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    lineHeight = 18.sp
                 )
             }
         }

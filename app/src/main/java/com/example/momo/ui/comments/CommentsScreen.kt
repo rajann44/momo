@@ -49,6 +49,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualAvatar
 import com.example.momo.data.Comment
 import com.example.momo.data.DummyData
 
@@ -132,13 +133,11 @@ fun CommentsScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = DummyData.currentUser.avatarUrl,
-                contentDescription = "Current user avatar",
+            SpiritualAvatar(
+                avatarUrl = DummyData.currentUser.avatarUrl,
                 modifier = Modifier
                     .size(36.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                    .clip(CircleShape)
             )
             Spacer(modifier = Modifier.width(12.dp))
             TextField(
@@ -200,13 +199,11 @@ fun CommentItem(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.Top
     ) {
-        AsyncImage(
-            model = comment.user.avatarUrl,
-            contentDescription = null,
+        SpiritualAvatar(
+            avatarUrl = comment.user.avatarUrl,
             modifier = Modifier
                 .size(36.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
+                .clip(CircleShape)
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(

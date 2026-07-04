@@ -160,7 +160,8 @@ object DummyData {
                 id = userStory.id,
                 imageUrl = "spiritual://MANDALA?hue=${if (userId == "krishna") 50 else 200}",
                 timeAgo = "2h",
-                isPostShare = false
+                isPostShare = false,
+                text = userStory.quote
             )
         )
     }

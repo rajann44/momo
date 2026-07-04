@@ -56,6 +56,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -192,19 +194,44 @@ fun StoryScreen(
             }
         } else {
             // Standard Full-screen Image Story
-            if (activeStory.imageUrl.startsWith("spiritual://")) {
-                val uri = activeStory.imageUrl
-                val parts = uri.substring("spiritual://".length).split("?hue=")
-                val artType = parts.getOrNull(0) ?: "MANDALA"
-                val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
-                SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
-            } else {
-                AsyncImage(
-                    model = activeStory.imageUrl,
-                    contentDescription = "Story Media",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                if (activeStory.imageUrl.startsWith("spiritual://")) {
+                    val uri = activeStory.imageUrl
+                    val parts = uri.substring("spiritual://".length).split("?hue=")
+                    val artType = parts.getOrNull(0) ?: "MANDALA"
+                    val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                    SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
+                } else {
+                    AsyncImage(
+                        model = activeStory.imageUrl,
+                        contentDescription = "Story Media",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+                if (activeStory.text.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.85f)
+                            .background(Color.Black.copy(alpha = 0.65f), RoundedCornerShape(16.dp))
+                            .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(16.dp))
+                            .padding(24.dp)
+                    ) {
+                        Text(
+                            text = activeStory.text,
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Italic,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
             }
         }
 

@@ -73,5 +73,6 @@ data class StoryItem(
     val timeAgo: String,
     val isPostShare: Boolean = false,
     val sharedPostUser: User? = null,
-    val sharedPostImg: String = ""
+    val sharedPostImg: String = "",
+    val text: String = ""
 )
