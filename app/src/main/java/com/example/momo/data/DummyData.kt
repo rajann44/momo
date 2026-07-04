@@ -3,9 +3,12 @@ package com.example.momo.data
 import android.content.Context
 import androidx.navigation3.runtime.NavKey
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 
 object DummyData {
-    var activeDay: Int = 1
+    var activeDay by mutableStateOf(1)
 
     var currentUser = User(
         id = "current_user",
