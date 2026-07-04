@@ -113,16 +113,7 @@ fun ProfileScreen(
 
     val bookmarkedPosts = remember(DummyData.bookmarkedPostIds.size, DummyData.activeDay) {
         val allDatabasePosts = MahabharataDatabase.dailyContent.flatMap { it.posts }.map { p ->
-            Post(
-                id = p.id,
-                user = DummyData.getUserById(p.characterId),
-                imageUrl = "spiritual://${p.artType}?hue=${p.hue}",
-                caption = p.caption,
-                likesCount = 1200 + Math.abs(p.id.hashCode() % 5000),
-                commentsCount = p.comments.size,
-                timeAgo = "Day ${p.id.split("_")[1]}",
-                isBookmarked = true
-            )
+            DummyData.transformPost(p, isBookmarked = true, timeAgoText = "Day ${p.id.split("_")[1]}")
         }
         allDatabasePosts.filter { DummyData.bookmarkedPostIds.contains(it.id) }.distinctBy { it.id }
     }

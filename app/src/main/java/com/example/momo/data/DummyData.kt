@@ -52,21 +52,40 @@ object DummyData {
         return transformCharacter(char)
     }
 
+    fun getLikesCountForPost(postId: String, characterId: String): Int {
+        val baseLikes = when (characterId) {
+            "krishna" -> 108000
+            "arjuna" -> 18780
+            "karna" -> 24700
+            "yudhishthira" -> 100000
+            "bhishma" -> 18000
+            "duryodhana" -> 11000
+            "draupadi" -> 10080
+            "shakuni" -> 6000
+            else -> 10800
+        }
+        val offset = Math.abs(postId.hashCode() % 100)
+        return baseLikes + offset
+    }
+
+    fun transformPost(p: MahabharataPost, isBookmarked: Boolean = false, isLiked: Boolean = false, timeAgoText: String? = null): Post {
+        return Post(
+            id = p.id,
+            user = getUserById(p.characterId),
+            imageUrl = "spiritual://${p.artType}?hue=${p.hue}",
+            caption = p.caption,
+            likesCount = getLikesCountForPost(p.id, p.characterId),
+            commentsCount = p.comments.size,
+            timeAgo = timeAgoText ?: "Day $activeDay",
+            isLiked = isLiked,
+            isBookmarked = isBookmarked || bookmarkedPostIds.contains(p.id)
+        )
+    }
+
     val posts: List<Post>
         get() {
             val content = MahabharataDatabase.getContentForDay(activeDay)
-            return content.posts.map { p ->
-                Post(
-                    id = p.id,
-                    user = getUserById(p.characterId),
-                    imageUrl = "spiritual://${p.artType}?hue=${p.hue}",
-                    caption = p.caption,
-                    likesCount = 1200 + Math.abs(p.id.hashCode() % 5000),
-                    commentsCount = p.comments.size,
-                    timeAgo = "Day $activeDay",
-                    isLiked = false
-                )
-            }
+            return content.posts.map { p -> transformPost(p) }
         }
 
     fun getPostById(id: String): Post {
