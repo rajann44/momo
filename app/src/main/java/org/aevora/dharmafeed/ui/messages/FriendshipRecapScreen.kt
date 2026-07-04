@@ -178,13 +178,13 @@ fun FriendshipRecapScreen(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Momo Recap with ${friend.name}",
+                            text = "Dharma Connection with ${friend.name}",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
                         Text(
-                            text = "Friendship in review ✨",
+                            text = "Sacred bond in review ✨",
                             fontSize = 11.sp,
                             color = Color.White.copy(alpha = 0.6f)
                         )

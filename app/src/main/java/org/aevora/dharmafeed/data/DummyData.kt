@@ -206,7 +206,7 @@ object DummyData {
 
     // Load active day and profile details from SharedPreferences
     fun loadDay(context: Context) {
-        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE)
         activeDay = prefs.getInt("active_day", 1)
         val name = prefs.getString("user_name", "Rajan Chaudhary") ?: "Rajan Chaudhary"
         val username = prefs.getString("user_username", "rajan_seeker") ?: "rajan_seeker"
@@ -233,7 +233,7 @@ object DummyData {
     val bookmarkedPostIds = mutableStateListOf<String>()
 
     fun loadBookmarks(context: Context) {
-        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE)
         val set = prefs.getStringSet("bookmarked_posts", emptySet()) ?: emptySet()
         bookmarkedPostIds.clear()
         bookmarkedPostIds.addAll(set)
@@ -245,14 +245,14 @@ object DummyData {
         } else {
             bookmarkedPostIds.add(postId)
         }
-        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE)
         prefs.edit().putStringSet("bookmarked_posts", bookmarkedPostIds.toSet()).apply()
     }
 
     // Save active day to SharedPreferences
     fun saveDay(context: Context, day: Int) {
         activeDay = day
-        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE)
         prefs.edit().putInt("active_day", day).apply()
     }
 
@@ -264,7 +264,7 @@ object DummyData {
             bio = bio,
             website = website
         )
-        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE)
         prefs.edit()
             .putString("user_name", name)
             .putString("user_username", username)

@@ -525,7 +525,7 @@ fun ProfileScreen(
 
     if (showLanguageDialog) {
         val context = LocalContext.current
-        val prefs = remember { context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE) }
+        val prefs = remember { context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE) }
         var currentLang by remember { mutableStateOf(prefs.getString("app_language", "en") ?: "en") }
 
         AlertDialog(

@@ -361,7 +361,7 @@ fun GeneratingScreen(onGenerationDone: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = "momo AI is working",
+            text = "Dharma AI is working",
             style = androidx.compose.ui.text.TextStyle(
                 brush = gradient,
                 fontSize = 20.sp,
@@ -458,7 +458,7 @@ fun PreviewScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Just captured these moments! Generated with momo AI assistant ✨ #momoAI #lofi #vibes",
+                    text = "Just captured these moments! Generated with Dharma AI assistant ✨ #DharmaAI #spiritual #vibes",
                     color = Color.White,
                     fontSize = 13.sp,
                     lineHeight = 18.sp

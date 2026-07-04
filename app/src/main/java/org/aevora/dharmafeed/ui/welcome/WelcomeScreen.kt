@@ -67,7 +67,7 @@ fun setLocale(context: Context, languageCode: String) {
     resources.updateConfiguration(configuration, resources.displayMetrics)
     
     // Save language to SharedPrefs
-    val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE)
     prefs.edit().putString("app_language", languageCode).apply()
 }
 
@@ -80,7 +80,7 @@ fun WelcomeScreen(
     var onboardingStep by rememberSaveable { mutableIntStateOf(0) }
     
     // Language state to force Compose recomposition
-    val prefs = remember { context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE) }
+    val prefs = remember { context.getSharedPreferences("dharmafeed_prefs", Context.MODE_PRIVATE) }
     var selectedLanguageCode by remember { mutableStateOf(prefs.getString("app_language", "en") ?: "en") }
 
     Column(
