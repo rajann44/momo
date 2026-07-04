@@ -172,7 +172,7 @@ fun FeedScreen(
                             text = "DAY ${DummyData.activeDay}: ${dailyContent.title}",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700), // Gold
+                            color = MaterialTheme.colorScheme.primary, // Primary color for high contrast
                             letterSpacing = 1.sp
                         )
                         Spacer(modifier = Modifier.height(6.dp))
@@ -195,7 +195,7 @@ fun FeedScreen(
                             text = "Guidance: ${dailyContent.gitaVerse.commentary}",
                             fontSize = 11.sp,
                             fontStyle = FontStyle.Italic,
-                            color = Color(0xFFFFA500)
+                            color = MaterialTheme.colorScheme.secondary // Secondary color for high contrast
                         )
                     }
                 }

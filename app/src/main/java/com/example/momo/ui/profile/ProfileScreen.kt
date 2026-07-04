@@ -192,7 +192,7 @@ fun ProfileScreen(
                                     text = "MAHABHARATA DEV PANEL",
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFFFFD700),
+                                    color = MaterialTheme.colorScheme.primary,
                                     letterSpacing = 1.sp
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
