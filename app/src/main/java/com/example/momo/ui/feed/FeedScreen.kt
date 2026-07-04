@@ -1,0 +1,423 @@
+package com.example.momo.ui.feed
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddBox
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.ui.draw.blur
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import com.example.momo.AIReelAssistant
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation3.runtime.NavKey
+import coil.compose.AsyncImage
+import com.example.momo.Comments
+import com.example.momo.PostDetail
+import com.example.momo.UserProfile
+import com.example.momo.StoryView
+import com.example.momo.data.DummyData
+import com.example.momo.data.Post
+import com.example.momo.data.User
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FeedScreen(
+    onItemClick: (NavKey) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var postsState = remember { mutableStateMapOf<String, Post>().apply {
+        DummyData.posts.forEach { put(it.id, it) }
+    }}
+
+
+
+    Column(modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        // Custom Top Bar
+        TopAppBar(
+            title = {
+                Text(
+                    text = "Momo",
+                    fontSize = 26.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif,
+                    letterSpacing = 1.sp
+                )
+            },
+            actions = {
+                IconButton(onClick = { onItemClick(AIReelAssistant) }) {
+                    Icon(
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = "AI Reels Assistant"
+                    )
+                }
+                IconButton(onClick = { /* Create post */ }) {
+                    Icon(imageVector = Icons.Default.AddBox, contentDescription = "Create Post")
+                }
+                IconButton(onClick = { /* Notifications */ }) {
+                    Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "Notifications")
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.85f),
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                actionIconContentColor = MaterialTheme.colorScheme.onBackground
+            )
+        )
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 80.dp)
+        ) {
+
+
+            // Stories Header
+            item {
+                StoriesRow(users = DummyData.users, onStoryClick = { user ->
+                    if (user.hasActiveStory) {
+                        onItemClick(StoryView(user.id))
+                    } else {
+                        onItemClick(UserProfile(user.id))
+                    }
+                })
+                HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
+            }
+
+            // Posts list
+            items(postsState.values.toList(), key = { it.id }) { post ->
+                PostItem(
+                    post = post,
+                    onUserClick = { userId -> onItemClick(UserProfile(userId)) },
+                    onLikeClick = {
+                        val currentPost = postsState[post.id] ?: post
+                        postsState[post.id] = currentPost.copy(
+                            isLiked = !currentPost.isLiked,
+                            likesCount = currentPost.likesCount + if (currentPost.isLiked) -1 else 1
+                        )
+                    },
+                    onCommentClick = { postId -> onItemClick(Comments(postId)) },
+                    onPostClick = { postId -> onItemClick(PostDetail(postId)) }
+                )
+            }
+        }
+    }
+
+
+}
+
+@Composable
+fun StoriesRow(
+    users: List<User>,
+    onStoryClick: (User) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        item { Spacer(modifier = Modifier.width(4.dp)) }
+        items(users) { user ->
+            StoryCircle(user = user, onClick = { onStoryClick(user) })
+        }
+        item { Spacer(modifier = Modifier.width(4.dp)) }
+    }
+}
+
+@Composable
+fun StoryCircle(
+    user: User,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val instagramGradient = Brush.sweepGradient(
+        colors = listOf(
+            Color(0xFF833AB4), // Purple
+            Color(0xFFF77737), // Orange
+            Color(0xFFE1306C), // Pink
+            Color(0xFFC13584), // Magenta
+            Color(0xFFFD1D1D), // Red
+            Color(0xFF833AB4)  // Close loop
+        )
+    )
+
+    Column(
+        modifier = modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null,
+            onClick = onClick
+        ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .size(76.dp)
+                .padding(3.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            // Story Ring
+            if (user.hasActiveStory) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .border(2.dp, instagramGradient, CircleShape)
+                )
+            }
+
+            AsyncImage(
+                model = user.avatarUrl,
+                contentDescription = "${user.username}'s Story",
+                modifier = Modifier
+                    .size(66.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, MaterialTheme.colorScheme.background, CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(4.dp))
+        
+        Text(
+            text = if (user.id == "current_user") "Your Story" else user.username,
+            fontSize = 11.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(72.dp),
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+@Composable
+fun PostItem(
+    post: Post,
+    onUserClick: (String) -> Unit,
+    onLikeClick: () -> Unit,
+    onCommentClick: (String) -> Unit,
+    onPostClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isBookmarked by remember { mutableStateOf(post.isBookmarked) }
+    var isCaptionExpanded by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        // Header
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = post.user.avatarUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .clickable { onUserClick(post.user.id) },
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = post.user.username,
+                    fontSize = 13.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.clickable { onUserClick(post.user.id) }
+                )
+                Text(
+                    text = "New York, NY", // Location mock
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                )
+            }
+            IconButton(onClick = { /* Options */ }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = "Options",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
+
+        // Post Image
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(380.dp)
+                .clickable { onPostClick(post.id) }
+        ) {
+            AsyncImage(
+                model = post.imageUrl,
+                contentDescription = "Post Image",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        // Actions Row
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onLikeClick) {
+                Icon(
+                    imageVector = if (post.isLiked) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = "Like",
+                    tint = if (post.isLiked) Color.Red else MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+            IconButton(onClick = { onCommentClick(post.id) }) {
+                Icon(
+                    imageVector = Icons.Outlined.ChatBubbleOutline,
+                    contentDescription = "Comment",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            IconButton(onClick = { /* Share */ }) {
+                Icon(
+                    imageVector = Icons.Outlined.Share,
+                    contentDescription = "Share",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(onClick = { isBookmarked = !isBookmarked }) {
+                Icon(
+                    imageVector = if (isBookmarked) Icons.Outlined.Bookmark else Icons.Outlined.BookmarkBorder,
+                    contentDescription = "Bookmark",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+
+        // Likes, Caption, Comments Metadata
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+        ) {
+            Text(
+                text = "${post.likesCount} likes",
+                fontSize = 13.5.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            
+            // Expandable Caption
+            val captionText = buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append("${post.user.username} ")
+                }
+                append(post.caption)
+            }
+            
+            Text(
+                text = captionText,
+                fontSize = 13.sp,
+                maxLines = if (isCaptionExpanded) Int.MAX_VALUE else 2,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        isCaptionExpanded = !isCaptionExpanded
+                    }
+            )
+            
+            if (post.commentsCount > 0) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "View all ${post.commentsCount} comments",
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    modifier = Modifier.clickable { onCommentClick(post.id) }
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = post.timeAgo,
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
