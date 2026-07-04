@@ -142,7 +142,7 @@ fun FeedScreen(
 
             // Stories Header
             item {
-                StoriesRow(users = DummyData.users, onStoryClick = { user ->
+                StoriesRow(users = DummyData.users.filter { it.hasActiveStory }, onStoryClick = { user ->
                     if (user.hasActiveStory) {
                         onItemClick(StoryView(user.id))
                     } else {

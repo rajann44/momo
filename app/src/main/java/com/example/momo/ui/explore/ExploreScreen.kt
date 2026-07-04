@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualArt
 import com.example.momo.PostDetail
 import com.example.momo.data.DummyData
 import com.example.momo.data.Post
@@ -51,7 +52,19 @@ fun ExploreScreen(
     modifier: Modifier = Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    val explorePosts = remember { DummyData.explorePosts }
+    val explorePosts = remember(DummyData.activeDay) { DummyData.explorePosts }
+
+    val filteredPosts = remember(searchQuery, explorePosts) {
+        if (searchQuery.isBlank()) {
+            explorePosts
+        } else {
+            explorePosts.filter { post ->
+                post.caption.contains(searchQuery, ignoreCase = true) ||
+                post.user.username.contains(searchQuery, ignoreCase = true) ||
+                post.user.name.contains(searchQuery, ignoreCase = true)
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -74,7 +87,7 @@ fun ExploreScreen(
                     .clip(RoundedCornerShape(10.dp)),
                 placeholder = {
                     Text(
-                        text = "Search",
+                        text = "Search shloka or character...",
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
@@ -103,13 +116,8 @@ fun ExploreScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 80.dp)
         ) {
-            // We chunk our list of posts to create a repeating pattern:
-            // 1. One 2x2 image on left, and two 1x1 images stacked on right
-            // 2. Row of three 1x1 images
-            // 3. One 2x2 image on right, and two 1x1 images stacked on left
-            // 4. Row of three 1x1 images
-            
-            val chunks = explorePosts.chunked(9)
+            // We chunk our list of posts to create a repeating pattern
+            val chunks = filteredPosts.chunked(9)
             
             items(chunks.size) { chunkIndex ->
                 val chunk = chunks[chunkIndex]
@@ -142,11 +150,9 @@ fun ExploreGridPattern(
                         .padding(0.5.dp)
                         .clickable { onPostClick(posts[0].id) }
                 ) {
-                    AsyncImage(
-                        model = posts[0].imageUrl,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                    ExplorePostImage(
+                        imageUrl = posts[0].imageUrl,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
 
@@ -163,11 +169,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[1].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[1].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[1].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                     Box(
@@ -177,11 +181,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[2].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[2].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[2].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -197,11 +199,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[i].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[i].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[i].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -222,11 +222,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[i].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[i].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[i].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -241,11 +239,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[i].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[i].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[i].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -271,11 +267,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[6].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[6].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[6].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                     Box(
@@ -285,11 +279,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[7].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[7].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[7].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -302,11 +294,9 @@ fun ExploreGridPattern(
                         .padding(0.5.dp)
                         .clickable { onPostClick(posts[8].id) }
                 ) {
-                    AsyncImage(
-                        model = posts[8].imageUrl,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                    ExplorePostImage(
+                        imageUrl = posts[8].imageUrl,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
@@ -320,11 +310,9 @@ fun ExploreGridPattern(
                             .padding(0.5.dp)
                             .clickable { onPostClick(posts[i].id) }
                     ) {
-                        AsyncImage(
-                            model = posts[i].imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        ExplorePostImage(
+                            imageUrl = posts[i].imageUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -333,5 +321,26 @@ fun ExploreGridPattern(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ExplorePostImage(
+    imageUrl: String,
+    modifier: Modifier = Modifier
+) {
+    if (imageUrl.startsWith("spiritual://")) {
+        val uri = imageUrl
+        val parts = uri.substring("spiritual://".length).split("?hue=")
+        val artType = parts.getOrNull(0) ?: "MANDALA"
+        val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+        SpiritualArt(artType = artType, hue = hue, modifier = modifier)
+    } else {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = null,
+            modifier = modifier,
+            contentScale = ContentScale.Crop
+        )
     }
 }

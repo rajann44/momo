@@ -65,8 +65,8 @@ fun MessagesScreen(
     modifier: Modifier = Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    val messages = remember { DummyData.messages }
-    val onlineUsers = remember { DummyData.users.filter { it.isOnline && it.id != "current_user" } }
+    val messages = remember(DummyData.activeDay) { DummyData.messages }
+    val onlineUsers = remember(DummyData.activeDay) { DummyData.users.filter { it.isOnline && it.id != "current_user" } }
 
     Column(
         modifier = modifier

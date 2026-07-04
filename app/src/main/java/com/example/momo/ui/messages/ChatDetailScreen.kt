@@ -78,7 +78,7 @@ fun ChatDetailScreen(
     var isWatchTogetherActive by remember { mutableStateOf(false) }
     
     // Local list of messages to enable interactive sending
-    val chatMessages = remember(userId) {
+    val chatMessages = remember(userId, DummyData.activeDay) {
         mutableStateListOf<Message>().apply {
             addAll(DummyData.getConversationWith(userId))
         }

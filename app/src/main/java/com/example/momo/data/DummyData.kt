@@ -21,6 +21,8 @@ object DummyData {
     )
 
     fun transformCharacter(char: MahabharataCharacter): User {
+        val content = MahabharataDatabase.getContentForDay(activeDay)
+        val hasStory = content.stories.any { it.characterId == char.id }
         return User(
             id = char.id,
             username = char.username,
@@ -31,7 +33,7 @@ object DummyData {
             postsCount = 30,
             followersCount = 10000 + Math.abs(char.id.hashCode() % 90000),
             followingCount = 100 + Math.abs(char.id.hashCode() % 900),
-            hasActiveStory = true,
+            hasActiveStory = hasStory,
             isOnline = true,
             streakCount = 108
         )

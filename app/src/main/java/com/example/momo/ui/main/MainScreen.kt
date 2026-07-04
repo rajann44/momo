@@ -38,10 +38,8 @@ import coil.compose.AsyncImage
 import com.example.momo.data.DummyData
 import com.example.momo.ui.explore.ExploreScreen
 import com.example.momo.ui.feed.FeedScreen
-import com.example.momo.ui.moments.MomentsScreen
 import com.example.momo.ui.messages.MessagesScreen
 import com.example.momo.ui.profile.ProfileScreen
-import com.example.momo.ui.reels.ReelsScreen
 
 @Composable
 fun MainScreen(
@@ -54,10 +52,10 @@ fun MainScreen(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar(
-                containerColor = if (selectedTab == 3) Color.Black.copy(alpha = 0.85f) else MaterialTheme.colorScheme.background.copy(alpha = 0.85f),
+                containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.85f),
                 tonalElevation = 8.dp
             ) {
-                val itemColor = if (selectedTab == 3) Color.White else MaterialTheme.colorScheme.onBackground
+                val itemColor = MaterialTheme.colorScheme.onBackground
 
                 NavigationBarItem(
                     selected = selectedTab == 0,
@@ -96,8 +94,8 @@ fun MainScreen(
                     onClick = { selectedTab = 2 },
                     icon = {
                         Icon(
-                            imageVector = if (selectedTab == 2) Icons.Filled.PhotoCamera else Icons.Outlined.PhotoCamera,
-                            contentDescription = "Moments"
+                            imageVector = if (selectedTab == 2) Icons.Filled.Send else Icons.Outlined.Send,
+                            contentDescription = "Messages"
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
@@ -111,38 +109,6 @@ fun MainScreen(
                     selected = selectedTab == 3,
                     onClick = { selectedTab = 3 },
                     icon = {
-                        Icon(
-                            imageVector = if (selectedTab == 3) Icons.Filled.PlayArrow else Icons.Outlined.PlayArrow,
-                            contentDescription = "Reels"
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = itemColor,
-                        unselectedIconColor = itemColor.copy(alpha = 0.6f),
-                        indicatorColor = Color.Transparent
-                    )
-                )
-
-                NavigationBarItem(
-                    selected = selectedTab == 4,
-                    onClick = { selectedTab = 4 },
-                    icon = {
-                        Icon(
-                            imageVector = if (selectedTab == 4) Icons.Filled.Send else Icons.Outlined.Send,
-                            contentDescription = "Messages"
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = itemColor,
-                        unselectedIconColor = itemColor.copy(alpha = 0.6f),
-                        indicatorColor = Color.Transparent
-                    )
-                )
-
-                NavigationBarItem(
-                    selected = selectedTab == 5,
-                    onClick = { selectedTab = 5 },
-                    icon = {
                         AsyncImage(
                             model = DummyData.currentUser.avatarUrl,
                             contentDescription = "Profile",
@@ -150,7 +116,7 @@ fun MainScreen(
                                 .size(24.dp)
                                 .clip(CircleShape)
                                 .border(
-                                    width = if (selectedTab == 5) 1.5.dp else 0.dp,
+                                    width = if (selectedTab == 3) 1.5.dp else 0.dp,
                                     color = itemColor,
                                     shape = CircleShape
                                 ),
@@ -171,10 +137,8 @@ fun MainScreen(
             when (selectedTab) {
                 0 -> FeedScreen(onItemClick = onItemClick)
                 1 -> ExploreScreen(onItemClick = onItemClick)
-                2 -> MomentsScreen()
-                3 -> ReelsScreen(onItemClick = onItemClick)
-                4 -> MessagesScreen(onItemClick = onItemClick)
-                5 -> ProfileScreen(
+                2 -> MessagesScreen(onItemClick = onItemClick)
+                3 -> ProfileScreen(
                     userId = DummyData.currentUser.id,
                     onBackClick = {},
                     onItemClick = onItemClick,
