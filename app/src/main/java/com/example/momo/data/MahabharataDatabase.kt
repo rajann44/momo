@@ -306,53 +306,113 @@ object MahabharataDatabase {
             "krishna" to listOf(
                 MahabharataMessage(
                     id = "msg_${day}_k1",
-                    characterId = "krishna",
-                    text = when (day) {
-                        in 1..5 -> "Seeker, do not worry about the conflicts of the court. Keep your actions aligned with truth."
-                        in 6..12 -> "Exile is not a punishment, it is a period of reflection. Quiet the mind."
-                        in 13..18 -> "The battlefield of life requires you to stand tall. Listen to the Gita within."
-                        in 19..25 -> "Fight for justice, but keep your heart free from hatred. That is the way of the Yogi."
-                        else -> "The war is won, but the journey of self-realization has just begun. Go within."
-                    },
-                    isFromMe = false,
-                    timeAgo = "10m"
-                ),
-                MahabharataMessage(
-                    id = "msg_${day}_k2",
-                    characterId = "current_user",
-                    text = "Teach me how to find peace amidst chaos, Madhava.",
-                    isFromMe = true,
-                    timeAgo = "8m"
-                ),
-                MahabharataMessage(
-                    id = "msg_${day}_k3",
-                    characterId = "krishna",
-                    text = "Surrender all your actions to Me. Perform your duties with a calm mind, free from anxiety. You will reach Me.",
-                    isFromMe = false,
-                    timeAgo = "5m"
-                )
-            ),
-            "arjuna" to listOf(
-                MahabharataMessage(
-                    id = "msg_${day}_a1",
                     characterId = "arjuna",
-                    text = "My hands tremble when I see my family as my opponents. How can I pull the string?",
-                    isFromMe = false,
-                    timeAgo = "20m"
-                ),
-                MahabharataMessage(
-                    id = "msg_${day}_a2",
-                    characterId = "current_user",
-                    text = "Do your duty as a warrior, Arjuna. Krishna is by your side.",
+                    text = when (day) {
+                        in 1..3 -> "How can I fight Bhishma and Drona, who are worthy of my worship, O Madhusudana?"
+                        in 4..10 -> "Grandfather Bhishma is slaying thousands. I cannot bear to strike him with my arrows."
+                        in 11..15 -> "My heart breaks for Abhimanyu. He entered the Chakravyuha alone and undefended."
+                        in 16..18 -> "The final battle with Karna is here, Govinda. My mind must not waver."
+                        else -> "The war has ended, but the silence is heavier than the battlefield. What next, Krishna?"
+                    },
                     isFromMe = true,
                     timeAgo = "15m"
                 ),
                 MahabharataMessage(
-                    id = "msg_${day}_a3",
-                    characterId = "arjuna",
-                    text = "Indeed. With Govinda as my charioteer, I shall rise above despair.",
+                    id = "msg_${day}_k2",
+                    characterId = "krishna",
+                    text = when (day) {
+                        in 1..3 -> "The wise grieve neither for the living nor for the dead. Stand up, Arjuna, and perform your duty."
+                        in 4..10 -> "To uphold Dharma, you must place your hesitation aside. Use Shikhandi as your shield."
+                        in 11..15 -> "Grief is the path to anger, Arjuna. Channel it into your vow to defeat Jayadratha."
+                        in 16..18 -> "Karna is a formidable warrior. Focus on your target, and leave the cosmic balance to the divine."
+                        else -> "Establish righteousness and heal the land. A new era begins, and your duties are not yet complete."
+                    },
                     isFromMe = false,
                     timeAgo = "10m"
+                )
+            ),
+            "arjuna" to listOf(
+                MahabharataMessage(
+                    id = "msg_${day}_y1",
+                    characterId = "yudhishthira",
+                    text = when (day) {
+                        in 1..3 -> "Grandfather Bhishma, I seek your permission and blessings before we begin this battle."
+                        in 4..10 -> "How can we defeat you, Grandsire? Your invincible bow is consuming our entire army."
+                        in 11..15 -> "With you on the bed of arrows, grandfather, the battlefield has lost its light. Drona is relentless."
+                        in 16..18 -> "Karna is leading the Kaurava forces now. Contemplating this destruction fills me with despair."
+                        else -> "Teach me the duties of a righteous king, Grandfather, before you leave this mortal world."
+                    },
+                    isFromMe = false,
+                    timeAgo = "20m"
+                ),
+                MahabharataMessage(
+                    id = "msg_${day}_y2",
+                    characterId = "bhishma",
+                    text = when (day) {
+                        in 1..3 -> "My body is bound to Hastinapur, Yudhisthira, but my blessings are always with Dharma. You shall prevail."
+                        in 4..10 -> "I will not raise weapons against a woman or anyone who was once a woman. Bring Shikhandi before me."
+                        in 11..15 -> "Drona fights like a storm, but remember that even the greatest mountain must yield to righteousness."
+                        in 16..18 -> "Stand firm in your righteousness, Yudhisthira. Victory belongs to those who stand on the path of truth."
+                        else -> "Let truth be your crown. Treat your subjects as your own children, and let justice guide every action."
+                    },
+                    isFromMe = true,
+                    timeAgo = "15m"
+                )
+            ),
+            "duryodhana" to listOf(
+                MahabharataMessage(
+                    id = "msg_${day}_d1",
+                    characterId = "duryodhana",
+                    text = when (day) {
+                        in 1..3 -> "Grandfather is leading, but I wish you were on the battlefield with your bow, Karna."
+                        in 4..10 -> "Bhishma is too lenient with the Pandavas. They are not retreating, and our forces are wavering."
+                        in 11..15 -> "Drona has created the Chakravyuha. This is our chance to capture Yudhishthira!"
+                        in 16..18 -> "You are the commander now, Karna. My hope rests entirely on your arrows today."
+                        else -> "Our brothers are gone, Karna. I stand alone by the lake. Was it all in vain?"
+                    },
+                    isFromMe = false,
+                    timeAgo = "12m"
+                ),
+                MahabharataMessage(
+                    id = "msg_${day}_d2",
+                    characterId = "karna",
+                    text = when (day) {
+                        in 1..3 -> "My vow binds me while Bhishma commands, but my loyalty and my heart are always with you, my friend."
+                        in 4..10 -> "Do not despair, Duryodhana. Once Bhishma falls, Surya's grace and my arrows will sweep the field."
+                        in 11..15 -> "Abhimanyu has entered the formation. He is brave, but he cannot withstand the combined might of our heroes."
+                        in 16..18 -> "My chariot wheel may sink, but my spirit remains unbroken. I will face Arjuna and claim victory for you."
+                        else -> "True friendship is the only wealth I carried. Stand like a king, Duryodhana, until the very last breath."
+                    },
+                    isFromMe = true,
+                    timeAgo = "8m"
+                )
+            ),
+            "shakuni" to listOf(
+                MahabharataMessage(
+                    id = "msg_${day}_s1",
+                    characterId = "shakuni",
+                    text = when (day) {
+                        in 1..3 -> "The Pandavas have Krishna, but we have the larger army and strategic positions, my nephew."
+                        in 4..10 -> "If Bhishma falls, Karna can join the field. This plays perfectly into our hands."
+                        in 11..15 -> "We have slain Abhimanyu. Arjuna has vowed to kill Jayadratha by sunset tomorrow. We must protect him at all costs."
+                        in 16..18 -> "The battlefield shrinks. We must use every tactical maneuver we possess."
+                        else -> "The game of dice has concluded, Duryodhana. We played our parts to the end."
+                    },
+                    isFromMe = false,
+                    timeAgo = "18m"
+                ),
+                MahabharataMessage(
+                    id = "msg_${day}_s2",
+                    characterId = "duryodhana",
+                    text = when (day) {
+                        in 1..3 -> "Your counsel is my greatest shield, Uncle. We shall not let them reclaim Hastinapur."
+                        in 4..10 -> "Indeed. Karna's arrival will change the entire course of this war."
+                        in 11..15 -> "Jayadratha will be hidden behind a wall of a hundred thousand soldiers. Arjuna's vow will fail."
+                        in 16..18 -> "We must fight with everything we have left. There is no turning back now."
+                        else -> "You guided my ambition, Uncle. The crown is gone, but I will die a warrior on the field."
+                    },
+                    isFromMe = true,
+                    timeAgo = "14m"
                 )
             )
         )
