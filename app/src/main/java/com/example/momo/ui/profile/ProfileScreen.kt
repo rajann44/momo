@@ -63,6 +63,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
 import com.example.momo.PostDetail
+import com.example.momo.ChatDetail
 import com.example.momo.data.DummyData
 import com.example.momo.data.User
 
@@ -248,7 +249,7 @@ fun ProfileScreen(
 
                             ProfileActionButton(
                                 text = "Message",
-                                onClick = { /* Open chat */ },
+                                onClick = { onItemClick(ChatDetail(user.id)) },
                                 modifier = Modifier.weight(1f)
                             )
 
