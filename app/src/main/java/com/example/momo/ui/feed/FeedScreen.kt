@@ -63,6 +63,8 @@ import androidx.compose.material3.TextButton
 import com.example.momo.AIReelAssistant
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.res.stringResource
+import com.example.momo.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
@@ -106,7 +108,7 @@ fun FeedScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = "Momo",
+                    text = stringResource(id = R.string.app_name),
                     fontSize = 26.sp,
                     fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Bold,

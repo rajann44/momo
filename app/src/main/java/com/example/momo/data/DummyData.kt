@@ -185,6 +185,14 @@ object DummyData {
             website = website
         )
         loadBookmarks(context)
+        
+        // Load language preference
+        val lang = prefs.getString("app_language", "en") ?: "en"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = context.resources.configuration
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 
     val bookmarkedPostIds = mutableStateListOf<String>()
