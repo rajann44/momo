@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.momo"
+    namespace = "org.aevora.dharmafeed"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.example.momo"
+        applicationId = "org.aevora.dharmafeed"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
