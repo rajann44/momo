@@ -6,7 +6,7 @@ import androidx.navigation3.runtime.NavKey
 object DummyData {
     var activeDay: Int = 1
 
-    val currentUser = User(
+    var currentUser = User(
         id = "current_user",
         username = "rajan_seeker",
         avatarUrl = "spiritual://AVATAR?color=#FFD700&name=Rajan",
@@ -168,10 +168,21 @@ object DummyData {
         )
     }
 
-    // Load active day from SharedPreferences
+    // Load active day and profile details from SharedPreferences
     fun loadDay(context: Context) {
         val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
         activeDay = prefs.getInt("active_day", 1)
+        val name = prefs.getString("user_name", "Rajan Chaudhary") ?: "Rajan Chaudhary"
+        val username = prefs.getString("user_username", "rajan_seeker") ?: "rajan_seeker"
+        val bio = prefs.getString("user_bio", "A seeker on a spiritual journey through the Mahabharata epic. 🕉️🧘‍♂️") ?: "A seeker on a spiritual journey through the Mahabharata epic. 🕉️🧘‍♂️"
+        val website = prefs.getString("user_website", "github.com/rajan") ?: "github.com/rajan"
+        
+        currentUser = currentUser.copy(
+            name = name,
+            username = username,
+            bio = bio,
+            website = website
+        )
     }
 
     // Save active day to SharedPreferences
@@ -179,5 +190,22 @@ object DummyData {
         activeDay = day
         val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
         prefs.edit().putInt("active_day", day).apply()
+    }
+
+    // Save user profile details to SharedPreferences
+    fun saveUserProfile(context: Context, name: String, username: String, bio: String, website: String) {
+        currentUser = currentUser.copy(
+            name = name,
+            username = username,
+            bio = bio,
+            website = website
+        )
+        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        prefs.edit()
+            .putString("user_name", name)
+            .putString("user_username", username)
+            .putString("user_bio", bio)
+            .putString("user_website", website)
+            .apply()
     }
 }

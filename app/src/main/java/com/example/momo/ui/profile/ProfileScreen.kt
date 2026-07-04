@@ -36,6 +36,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -81,7 +84,9 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     isPersonalProfile: Boolean = false
 ) {
-    val user = remember(userId) { DummyData.getUserById(userId) }
+    var refreshTrigger by remember { mutableStateOf(0) }
+    val user = remember(userId, refreshTrigger) { DummyData.getUserById(userId) }
+    var isEditing by remember { mutableStateOf(false) }
     val userPosts = remember(userId) {
         // Find posts belonging to user, or fallback to mock list if user has no posts in global feed
         val filtered = DummyData.posts.filter { it.user.id == userId }
@@ -238,18 +243,24 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     // Bio Details
+                    val displayName = if (user.name.isBlank()) "Unnamed Seeker" else user.name
+                    val displayBio = if (user.bio.isBlank()) "No spiritual bio added yet. Tap 'Edit Profile' to add your bio." else user.bio
+                    val isBioEmpty = user.bio.isBlank()
+                    val isNameEmpty = user.name.isBlank()
+
                     Text(
-                        text = user.name,
+                        text = displayName,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = if (isNameEmpty) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = user.bio,
+                        text = displayBio,
                         fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        lineHeight = 18.sp
+                        color = if (isBioEmpty) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
+                        lineHeight = 18.sp,
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = if (isBioEmpty) androidx.compose.ui.text.font.FontStyle.Italic else androidx.compose.ui.text.font.FontStyle.Normal)
                     )
                     if (user.website.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(4.dp))
@@ -258,6 +269,14 @@ fun ProfileScreen(
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Color(0xFF00376B) // Dark blue link color
+                        )
+                    } else if (isPersonalProfile) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "No website added.",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                            style = androidx.compose.ui.text.TextStyle(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
                         )
                     }
 
@@ -271,7 +290,7 @@ fun ProfileScreen(
                         ) {
                             ProfileActionButton(
                                 text = "Edit Profile",
-                                onClick = { /* Edit */ },
+                                onClick = { isEditing = true },
                                 modifier = Modifier.weight(1f)
                             )
                             ProfileActionButton(
@@ -393,6 +412,73 @@ fun ProfileScreen(
                 }
             }
         }
+    }
+
+    if (isEditing) {
+        var editName by remember { mutableStateOf(user.name) }
+        var editUsername by remember { mutableStateOf(user.username) }
+        var editBio by remember { mutableStateOf(user.bio) }
+        var editWebsite by remember { mutableStateOf(user.website) }
+        val context = LocalContext.current
+
+        AlertDialog(
+            onDismissRequest = { isEditing = false },
+            title = { Text(text = "Edit Profile", fontWeight = FontWeight.Bold) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = editName,
+                        onValueChange = { editName = it },
+                        label = { Text("Name") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = editUsername,
+                        onValueChange = { editUsername = it },
+                        label = { Text("Username") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = editBio,
+                        onValueChange = { editBio = it },
+                        label = { Text("Bio") },
+                        maxLines = 3,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = editWebsite,
+                        onValueChange = { editWebsite = it },
+                        label = { Text("Website") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        DummyData.saveUserProfile(
+                            context = context,
+                            name = editName,
+                            username = editUsername,
+                            bio = editBio,
+                            website = editWebsite
+                        )
+                        refreshTrigger++
+                        isEditing = false
+                    }
+                ) {
+                    Text("Save")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { isEditing = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 
