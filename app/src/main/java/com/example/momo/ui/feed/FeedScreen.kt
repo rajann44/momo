@@ -73,6 +73,7 @@ import coil.compose.AsyncImage
 import com.example.momo.Comments
 import com.example.momo.PostDetail
 import com.example.momo.UserProfile
+import androidx.compose.ui.platform.LocalContext
 import com.example.momo.StoryView
 import com.example.momo.data.DummyData
 import com.example.momo.data.Post
@@ -314,7 +315,8 @@ fun PostItem(
     onPostClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isBookmarked by remember { mutableStateOf(post.isBookmarked) }
+    val context = LocalContext.current
+    val isBookmarked = DummyData.bookmarkedPostIds.contains(post.id)
     var isCaptionExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -439,7 +441,7 @@ fun PostItem(
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { isBookmarked = !isBookmarked }) {
+            IconButton(onClick = { DummyData.toggleBookmark(context, post.id) }) {
                 Icon(
                     imageVector = if (isBookmarked) Icons.Outlined.Bookmark else Icons.Outlined.BookmarkBorder,
                     contentDescription = "Bookmark",

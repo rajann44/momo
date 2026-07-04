@@ -2,6 +2,7 @@ package com.example.momo.data
 
 import android.content.Context
 import androidx.navigation3.runtime.NavKey
+import androidx.compose.runtime.mutableStateListOf
 
 object DummyData {
     var activeDay: Int = 1
@@ -183,6 +184,26 @@ object DummyData {
             bio = bio,
             website = website
         )
+        loadBookmarks(context)
+    }
+
+    val bookmarkedPostIds = mutableStateListOf<String>()
+
+    fun loadBookmarks(context: Context) {
+        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val set = prefs.getStringSet("bookmarked_posts", emptySet()) ?: emptySet()
+        bookmarkedPostIds.clear()
+        bookmarkedPostIds.addAll(set)
+    }
+
+    fun toggleBookmark(context: Context, postId: String) {
+        if (bookmarkedPostIds.contains(postId)) {
+            bookmarkedPostIds.remove(postId)
+        } else {
+            bookmarkedPostIds.add(postId)
+        }
+        val prefs = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putStringSet("bookmarked_posts", bookmarkedPostIds.toSet()).apply()
     }
 
     // Save active day to SharedPreferences

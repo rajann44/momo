@@ -74,6 +74,8 @@ import com.example.momo.PostDetail
 import com.example.momo.ChatDetail
 import com.example.momo.data.DummyData
 import com.example.momo.data.User
+import com.example.momo.data.MahabharataDatabase
+import com.example.momo.data.Post
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,10 +90,8 @@ fun ProfileScreen(
     val user = remember(userId, refreshTrigger) { DummyData.getUserById(userId) }
     var isEditing by remember { mutableStateOf(false) }
     val userPosts = remember(userId) {
-        // Find posts belonging to user, or fallback to mock list if user has no posts in global feed
         val filtered = DummyData.posts.filter { it.user.id == userId }
         if (filtered.isEmpty()) {
-            // Generate some mock posts for this specific user
             listOf(
                 DummyData.posts[0].copy(id = "up_1", imageUrl = "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600"),
                 DummyData.posts[1].copy(id = "up_2", imageUrl = "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=600"),
@@ -100,6 +100,22 @@ fun ProfileScreen(
         } else {
             filtered
         }
+    }
+
+    val bookmarkedPosts = remember(DummyData.bookmarkedPostIds.size, DummyData.activeDay) {
+        val allDatabasePosts = MahabharataDatabase.dailyContent.flatMap { it.posts }.map { p ->
+            Post(
+                id = p.id,
+                user = DummyData.getUserById(p.characterId),
+                imageUrl = "spiritual://${p.artType}?hue=${p.hue}",
+                caption = p.caption,
+                likesCount = 1200 + Math.abs(p.id.hashCode() % 5000),
+                commentsCount = p.comments.size,
+                timeAgo = "Day ${p.id.split("_")[1]}",
+                isBookmarked = true
+            )
+        }
+        allDatabasePosts.filter { DummyData.bookmarkedPostIds.contains(it.id) }.distinctBy { it.id }
     }
 
     var isFollowingState by remember { mutableStateOf(user.isFollowing) }
@@ -234,7 +250,9 @@ fun ProfileScreen(
                             modifier = Modifier.weight(1f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            ProfileStat(number = "${userPosts.size}", label = "Posts")
+                            val postCountText = if (isPersonalProfile) "${bookmarkedPosts.size}" else "${userPosts.size}"
+                            val postsLabel = if (isPersonalProfile) "Saved" else "Posts"
+                            ProfileStat(number = postCountText, label = postsLabel)
                             ProfileStat(number = "${user.followersCount}", label = "Followers")
                             ProfileStat(number = "${user.followingCount}", label = "Following")
                         }
@@ -358,55 +376,85 @@ fun ProfileScreen(
                     // Highlights Section
                     HighlightsSection()
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Tab bar row
-                    ProfileTabs(
-                        selectedIndex = activeTab,
-                        onTabSelected = { activeTab = it }
-                    )
+                    // Tab bar row or Saved Teachings subheader
+                    if (!isPersonalProfile) {
+                        ProfileTabs(
+                            selectedIndex = activeTab,
+                            onTabSelected = { activeTab = it }
+                        )
+                    } else {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "Saved Teachings",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                 }
             }
 
-            // Grid list items
-            val displayedPosts = if (activeTab == 0 || activeTab == 1) userPosts else userPosts.reversed()
-            items(displayedPosts, key = { "${activeTab}_${it.id}" }) { post ->
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .padding(1.dp)
-                        .clickable {
-                            if (activeTab != 1) onItemClick(PostDetail(post.id))
-                        },
-                    contentAlignment = Alignment.BottomStart
-                ) {
-                    if (post.imageUrl.startsWith("spiritual://")) {
-                        val uri = post.imageUrl
-                        val parts = uri.substring("spiritual://".length).split("?hue=")
-                        val artType = parts.getOrNull(0) ?: "MANDALA"
-                        val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
-                        SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
-                    } else {
-                        AsyncImage(
-                            model = post.imageUrl,
+            // Grid list items or Empty/Zero state
+            if (isPersonalProfile && bookmarkedPosts.isEmpty()) {
+                item(span = { GridItemSpan(3) }) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 48.dp, horizontal = 24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.BookmarkBorder,
                             contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "No Saved Teachings",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = "Tap the bookmark icon on any post in the feed to save the wisdom of Mahabharata here.",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
-
-                    if (activeTab == 1) {
-                        Row(
-                            modifier = Modifier.padding(6.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
+                }
+            } else {
+                val displayedPosts = if (isPersonalProfile) bookmarkedPosts else (if (activeTab == 0 || activeTab == 1) userPosts else userPosts.reversed())
+                items(displayedPosts, key = { "${activeTab}_${it.id}" }) { post ->
+                    Box(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .padding(1.dp)
+                            .clickable {
+                                onItemClick(PostDetail(post.id))
+                            },
+                        contentAlignment = Alignment.BottomStart
+                    ) {
+                        if (post.imageUrl.startsWith("spiritual://")) {
+                            val uri = post.imageUrl
+                            val parts = uri.substring("spiritual://".length).split("?hue=")
+                            val artType = parts.getOrNull(0) ?: "MANDALA"
+                            val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                            SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
+                        } else {
+                            AsyncImage(
+                                model = post.imageUrl,
                                 contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
                             )
-                            Text("1.2K", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
