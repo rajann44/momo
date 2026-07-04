@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualAvatar
 import com.example.momo.data.DummyData
 import com.example.momo.data.Message
 import androidx.navigation3.runtime.NavKey
@@ -79,11 +80,7 @@ fun ChatDetailScreen(
     // Local list of messages to enable interactive sending
     val chatMessages = remember(userId) {
         mutableStateListOf<Message>().apply {
-            // Seed conversation history
-            add(Message("c_init_1", friend, "Hey there!", "10:00 AM"))
-            add(Message("c_init_2", DummyData.currentUser, "Hey! How's it going?", "10:02 AM"))
-            add(Message("c_init_3", friend, "Going great, just working on some UI designs.", "10:03 AM"))
-            add(Message("c_init_4", friend, "Are we still meeting up later today?", "10:05 AM"))
+            addAll(DummyData.getConversationWith(userId))
         }
     }
     
@@ -111,13 +108,11 @@ fun ChatDetailScreen(
                     Box(
                         contentAlignment = Alignment.BottomEnd
                     ) {
-                        AsyncImage(
-                            model = friend.avatarUrl,
-                            contentDescription = null,
+                        SpiritualAvatar(
+                            avatarUrl = friend.avatarUrl,
                             modifier = Modifier
                                 .size(36.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
+                                .clip(CircleShape)
                         )
                         if (friend.isOnline) {
                             Box(
@@ -260,11 +255,9 @@ fun ChatDetailScreen(
                             .border(2.dp, Color(0xFF3897F0), CircleShape)
                             .align(Alignment.TopEnd)
                     ) {
-                        AsyncImage(
-                            model = friend.avatarUrl,
-                            contentDescription = "Live camera",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                        SpiritualAvatar(
+                            avatarUrl = friend.avatarUrl,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
 
@@ -378,7 +371,7 @@ fun ChatDetailScreen(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(12.dp))
                                         .background(
-                                            if (isCurrentUser) Color(0xFF3897F0)
+                                            if (isCurrentUser) Color(0xFFFF8C00)
                                             else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
                                         )
                                         .padding(horizontal = 10.dp, vertical = 6.dp)
@@ -415,13 +408,11 @@ fun ChatDetailScreen(
                         horizontalArrangement = if (isCurrentUser) Arrangement.End else Arrangement.Start
                     ) {
                         if (!isCurrentUser) {
-                            AsyncImage(
-                                model = friend.avatarUrl,
-                                contentDescription = null,
+                            SpiritualAvatar(
+                                avatarUrl = friend.avatarUrl,
                                 modifier = Modifier
                                     .size(28.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.Crop
+                                    .clip(CircleShape)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
@@ -440,7 +431,7 @@ fun ChatDetailScreen(
                                         )
                                     )
                                     .background(
-                                        if (isCurrentUser) Color(0xFF3897F0) // Premium blue bubble
+                                        if (isCurrentUser) Color(0xFFFF8C00) // Premium saffron bubble
                                         else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f) // Grey bubble
                                     )
                                     .padding(horizontal = 14.dp, vertical = 10.dp)
@@ -505,7 +496,7 @@ fun ChatDetailScreen(
                 text = "Send",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (newMessageText.trim().isNotEmpty()) Color(0xFF3897F0) else Color(0xFF3897F0).copy(alpha = 0.4f),
+                color = if (newMessageText.trim().isNotEmpty()) Color(0xFFFF8C00) else Color(0xFFFF8C00).copy(alpha = 0.4f),
                 modifier = Modifier
                     .clickable(enabled = newMessageText.trim().isNotEmpty()) {
                         chatMessages.add(

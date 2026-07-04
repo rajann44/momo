@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualAvatar
 import com.example.momo.data.DummyData
 import kotlinx.coroutines.delay
 import androidx.compose.runtime.rememberCoroutineScope
@@ -80,10 +81,10 @@ fun FriendshipRecapScreen(
 
     val backgroundGradient = Brush.verticalGradient(
         colors = listOf(
-            Color(0xFFE1306C), // Pink
-            Color(0xFFC13584), // Magenta
-            Color(0xFF833AB4), // Purple
-            Color(0xFF0A0A0A)  // Deep Black
+            Color(0xFFFF8C00), // Saffron
+            Color(0xFFFFD700), // Gold
+            Color(0xFF8B4513), // Saddle Brown
+            Color(0xFF1E1E24)  // Dark Spiritual Space
         )
     )
 
@@ -168,13 +169,11 @@ fun FriendshipRecapScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AsyncImage(
-                        model = friend.avatarUrl,
-                        contentDescription = null,
+                    SpiritualAvatar(
+                        avatarUrl = friend.avatarUrl,
                         modifier = Modifier
                             .size(36.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
+                            .clip(CircleShape)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Column(modifier = Modifier.weight(1f)) {
@@ -236,28 +235,28 @@ fun StreakSlide(friend: com.example.momo.data.User) {
         modifier = Modifier.padding(16.dp)
     ) {
         Text(
-            text = "🔥",
+            text = "🧘‍♂️",
             fontSize = 84.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "You & ${friend.username}",
+            text = "Dharma Path with ${friend.name}",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
             textAlign = TextAlign.Center
         )
         Text(
-            text = "are on a ${friend.streakCount}-day streak!",
+            text = "${friend.streakCount} Spiritual Days",
             fontSize = 28.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFFF9A15E), // Orange flame glow
+            color = Color(0xFFFFD700), // Divine Gold
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Keeping the conversations alive daily. Don't let it die!",
+            text = "Aligning actions with righteous duty daily. The journey of the soul continues.",
             fontSize = 14.sp,
             color = Color.White.copy(alpha = 0.8f),
             textAlign = TextAlign.Center
@@ -273,20 +272,20 @@ fun SharedContentSlide() {
         modifier = Modifier.padding(16.dp)
     ) {
         Text(
-            text = "🐰🍿",
+            text = "🕉️🐚",
             fontSize = 60.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "Top Shared Reel",
+            text = "Top Shared Discourse",
             fontSize = 16.sp,
             color = Color.White.copy(alpha = 0.6f),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
         Text(
-            text = "Big Buck Bunny",
+            text = "Gita Upadesha",
             fontSize = 32.sp,
             fontWeight = FontWeight.ExtraBold,
             color = Color.White,
@@ -294,7 +293,7 @@ fun SharedContentSlide() {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "You shared this 15 times this month. Talk about an inside joke!",
+            text = "Contemplating the eternal message of Lord Krishna to Arjuna on the field of duty.",
             fontSize = 15.sp,
             color = Color.White.copy(alpha = 0.8f),
             textAlign = TextAlign.Center,
@@ -311,13 +310,13 @@ fun StatsSlide() {
         modifier = Modifier.padding(16.dp)
     ) {
         Text(
-            text = "📊💬",
+            text = "🛡️⚖️",
             fontSize = 60.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "Friendship Stats",
+            text = "Spiritual Progress",
             fontSize = 18.sp,
             color = Color.White.copy(alpha = 0.6f),
             fontWeight = FontWeight.Bold
@@ -330,24 +329,24 @@ fun StatsSlide() {
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("24", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Text("Inside Jokes", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
+                Text("Verses Read", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("142", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Text("Post Likes", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
+                Text("108", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text("Reflections", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("312", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Text("Reactions", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
+                Text("30", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text("Days Goal", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
             }
         }
         
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = "Most used word: \"composition\" 💻",
+            text = "Most contemplated: \"Dharma\" 🕉️",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFFF96167),
+            color = Color(0xFFFFD700),
             textAlign = TextAlign.Center
         )
     }
@@ -361,13 +360,13 @@ fun ConclusionSlide(friend: com.example.momo.data.User) {
         modifier = Modifier.padding(16.dp)
     ) {
         Text(
-            text = "❤️🤝",
+            text = "🌅🤝",
             fontSize = 72.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "True Besties",
+            text = "Divine Bond",
             fontSize = 36.sp,
             fontWeight = FontWeight.ExtraBold,
             color = Color.White,
@@ -375,7 +374,7 @@ fun ConclusionSlide(friend: com.example.momo.data.User) {
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "You and ${friend.name} are in the top 1% of Momo friendships. Here's to more genuine moments!",
+            text = "Walking hand-in-hand in friendship toward truth, self-realization, and absolute liberation.",
             fontSize = 15.sp,
             color = Color.White.copy(alpha = 0.8f),
             textAlign = TextAlign.Center,
@@ -398,19 +397,19 @@ fun FriendshipTriviaQuiz(
     val questions = remember {
         listOf(
             QuizQuestion(
-                question = "Who usually sends the first Reel of the day?",
-                options = listOf("Me, early bird! 🌅", "${friend.username} 🦉", "It's a dead tie! ⚖️"),
+                question = "Who is Arjuna's charioteer and guide in the Kurukshetra War?",
+                options = listOf("Yudhishthira ⚖️", "Vasudeva Krishna 🕉️", "Bhishma Pitamaha 🛡️"),
+                correctIndex = 1
+            ),
+            QuizQuestion(
+                question = "What is the name of Arjuna's celestial bow?",
+                options = listOf("Gandiva 🏹", "Sharanga 🏹", "Pinaka 🏹"),
+                correctIndex = 0
+            ),
+            QuizQuestion(
+                question = "How many days did the Kurukshetra War last?",
+                options = listOf("10 Days ⚔️", "14 Days ⚔️", "18 Days ⚔️"),
                 correctIndex = 2
-            ),
-            QuizQuestion(
-                question = "What is your shared love language?",
-                options = listOf("Spamming Reels 📲", "Late-night essays ✍️", "Emoji reaction spam 🔥"),
-                correctIndex = 0
-            ),
-            QuizQuestion(
-                question = "If your chat was a movie genre, it would be:",
-                options = listOf("Comedy (non-stop memes) 🎬", "Drama (deep talks) 🎭", "Sci-Fi (tech & future) 🚀"),
-                correctIndex = 0
             )
         )
     }
@@ -450,7 +449,7 @@ fun FriendshipTriviaQuiz(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "🍑 Momo Sync",
+                text = "🕉️ Gita Wisdom Quiz",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold

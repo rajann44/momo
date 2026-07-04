@@ -77,6 +77,12 @@ import com.example.momo.StoryView
 import com.example.momo.data.DummyData
 import com.example.momo.data.Post
 import com.example.momo.data.User
+import com.example.momo.data.MahabharataDatabase
+import com.example.momo.ui.components.SpiritualArt
+import com.example.momo.ui.components.SpiritualAvatar
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,9 +90,13 @@ fun FeedScreen(
     onItemClick: (NavKey) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var postsState = remember { mutableStateMapOf<String, Post>().apply {
-        DummyData.posts.forEach { put(it.id, it) }
-    }}
+    val activeDay = DummyData.activeDay
+    val postsState = remember { mutableStateMapOf<String, Post>() }
+
+    LaunchedEffect(activeDay) {
+        postsState.clear()
+        DummyData.posts.forEach { postsState[it.id] = it }
+    }
 
 
 
@@ -139,6 +149,55 @@ fun FeedScreen(
                         onItemClick(UserProfile(user.id))
                     }
                 })
+                HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
+            }
+
+            // Gita Verse of the Day Banner
+            item {
+                val dailyContent = MahabharataDatabase.getContentForDay(DummyData.activeDay)
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(14.dp)
+                    ) {
+                        Text(
+                            text = "DAY ${DummyData.activeDay}: ${dailyContent.title}",
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFFD700), // Gold
+                            letterSpacing = 1.sp
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = dailyContent.gitaVerse.verse,
+                            fontSize = 14.sp,
+                            fontStyle = FontStyle.Italic,
+                            fontFamily = FontFamily.Serif,
+                            lineHeight = 20.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = dailyContent.gitaVerse.translation,
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = "Guidance: ${dailyContent.gitaVerse.commentary}",
+                            fontSize = 11.sp,
+                            fontStyle = FontStyle.Italic,
+                            color = Color(0xFFFFA500)
+                        )
+                    }
+                }
                 HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f), thickness = 0.5.dp)
             }
 
@@ -224,14 +283,12 @@ fun StoryCircle(
                 )
             }
 
-            AsyncImage(
-                model = user.avatarUrl,
-                contentDescription = "${user.username}'s Story",
+            SpiritualAvatar(
+                avatarUrl = user.avatarUrl,
                 modifier = Modifier
                     .size(66.dp)
                     .clip(CircleShape)
-                    .border(2.dp, MaterialTheme.colorScheme.background, CircleShape),
-                contentScale = ContentScale.Crop
+                    .border(2.dp, MaterialTheme.colorScheme.background, CircleShape)
             )
         }
         
@@ -272,14 +329,12 @@ fun PostItem(
                 .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = post.user.avatarUrl,
-                contentDescription = null,
+            SpiritualAvatar(
+                avatarUrl = post.user.avatarUrl,
                 modifier = Modifier
                     .size(36.dp)
                     .clip(CircleShape)
-                    .clickable { onUserClick(post.user.id) },
-                contentScale = ContentScale.Crop
+                    .clickable { onUserClick(post.user.id) }
             )
             Spacer(modifier = Modifier.width(10.dp))
             Column(
@@ -293,7 +348,7 @@ fun PostItem(
                     modifier = Modifier.clickable { onUserClick(post.user.id) }
                 )
                 Text(
-                    text = "New York, NY", // Location mock
+                    text = if (post.user.id == "current_user") "Seeking Wisdom" else post.user.bio.substringBefore("."),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
@@ -314,12 +369,20 @@ fun PostItem(
                 .height(380.dp)
                 .clickable { onPostClick(post.id) }
         ) {
-            AsyncImage(
-                model = post.imageUrl,
-                contentDescription = "Post Image",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            if (post.imageUrl.startsWith("spiritual://")) {
+                val uri = post.imageUrl
+                val parts = uri.substring("spiritual://".length).split("?hue=")
+                val artType = parts.getOrNull(0) ?: "MANDALA"
+                val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
+            } else {
+                AsyncImage(
+                    model = post.imageUrl,
+                    contentDescription = "Post Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
 
         // Actions Row

@@ -62,6 +62,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualAvatar
+import com.example.momo.ui.components.SpiritualArt
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import com.example.momo.PostDetail
 import com.example.momo.ChatDetail
 import com.example.momo.data.DummyData
@@ -149,18 +154,73 @@ fun ProfileScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
+                    if (user.id == "current_user") {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+                            ),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(14.dp)
+                            ) {
+                                Text(
+                                    text = "MAHABHARATA DEV PANEL",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFFFFD700),
+                                    letterSpacing = 1.sp
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = "Current Day: ${DummyData.activeDay}",
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    val context = LocalContext.current
+                                    IconButton(
+                                        onClick = {
+                                            if (DummyData.activeDay > 1) {
+                                                DummyData.saveDay(context, DummyData.activeDay - 1)
+                                            }
+                                        },
+                                        enabled = DummyData.activeDay > 1
+                                    ) {
+                                        Text("<", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                                    }
+                                    IconButton(
+                                        onClick = {
+                                            if (DummyData.activeDay < 30) {
+                                                DummyData.saveDay(context, DummyData.activeDay + 1)
+                                            }
+                                        },
+                                        enabled = DummyData.activeDay < 30
+                                    ) {
+                                        Text(">", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Profile picture and stats row
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        AsyncImage(
-                            model = user.avatarUrl,
-                            contentDescription = user.username,
+                        SpiritualAvatar(
+                            avatarUrl = user.avatarUrl,
                             modifier = Modifier
                                 .size(86.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
+                                .clip(CircleShape)
                         )
                         
                         Spacer(modifier = Modifier.width(32.dp))
@@ -290,14 +350,24 @@ fun ProfileScreen(
             }
 
             // Grid list items
-            if (activeTab == 0) {
-                items(userPosts, key = { it.id }) { post ->
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .padding(1.dp)
-                            .clickable { onItemClick(PostDetail(post.id)) }
-                    ) {
+            val displayedPosts = if (activeTab == 0 || activeTab == 1) userPosts else userPosts.reversed()
+            items(displayedPosts, key = { "${activeTab}_${it.id}" }) { post ->
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .padding(1.dp)
+                        .clickable {
+                            if (activeTab != 1) onItemClick(PostDetail(post.id))
+                        },
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    if (post.imageUrl.startsWith("spiritual://")) {
+                        val uri = post.imageUrl
+                        val parts = uri.substring("spiritual://".length).split("?hue=")
+                        val artType = parts.getOrNull(0) ?: "MANDALA"
+                        val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                        SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
+                    } else {
                         AsyncImage(
                             model = post.imageUrl,
                             contentDescription = null,
@@ -305,23 +375,8 @@ fun ProfileScreen(
                             contentScale = ContentScale.Crop
                         )
                     }
-                }
-            } else if (activeTab == 1) {
-                // Mock Reels grid
-                items(userPosts, key = { "reel_" + it.id }) { post ->
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .padding(1.dp)
-                            .clickable { /* Detail */ },
-                        contentAlignment = Alignment.BottomStart
-                    ) {
-                        AsyncImage(
-                            model = post.imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
+
+                    if (activeTab == 1) {
                         Row(
                             modifier = Modifier.padding(6.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -334,23 +389,6 @@ fun ProfileScreen(
                             )
                             Text("1.2K", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                         }
-                    }
-                }
-            } else {
-                // Bookmarks grid
-                items(userPosts.reversed(), key = { "bookmark_" + it.id }) { post ->
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .padding(1.dp)
-                            .clickable { onItemClick(PostDetail(post.id)) }
-                    ) {
-                        AsyncImage(
-                            model = post.imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
                     }
                 }
             }
@@ -412,13 +450,13 @@ fun ProfileActionButton(
 fun HighlightsSection(
     modifier: Modifier = Modifier
 ) {
-    val highlightTitles = listOf("Design", "Workspace", "Travel", "Code", "Food")
+    val highlightTitles = listOf("Wisdom", "Dharma", "Battle", "Exile", "Gita")
     val highlightImages = listOf(
-        "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=200",
-        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=200",
-        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=200",
-        "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=200",
-        "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200"
+        "spiritual://MANDALA?hue=50",
+        "spiritual://YANTRA?hue=120",
+        "spiritual://CHARIOT_WHEEL?hue=0",
+        "spiritual://SACRED_GEOMETRY?hue=150",
+        "spiritual://MANDALA?hue=280"
     )
 
     LazyRow(
@@ -437,14 +475,23 @@ fun HighlightsSection(
                         .padding(3.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    AsyncImage(
-                        model = highlightImages[index],
-                        contentDescription = highlightTitles[index],
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
+                    val imageUrl = highlightImages[index]
+                    if (imageUrl.startsWith("spiritual://")) {
+                        val uri = imageUrl
+                        val parts = uri.substring("spiritual://".length).split("?hue=")
+                        val artType = parts.getOrNull(0) ?: "MANDALA"
+                        val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                        SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize().clip(CircleShape))
+                    } else {
+                        AsyncImage(
+                            model = imageUrl,
+                            contentDescription = highlightTitles[index],
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(

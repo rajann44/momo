@@ -166,7 +166,7 @@ fun CommentsScreen(
                 text = "Post",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (newCommentText.trim().isNotEmpty()) Color(0xFF3897F0) else Color(0xFF3897F0).copy(alpha = 0.4f),
+                color = if (newCommentText.trim().isNotEmpty()) Color(0xFFFF8C00) else Color(0xFFFF8C00).copy(alpha = 0.4f),
                 modifier = Modifier
                     .clickable(enabled = newCommentText.trim().isNotEmpty()) {
                         comments.add(

@@ -191,7 +191,7 @@ fun AIReelAssistantScreen(
                                             Box(
                                                 modifier = Modifier
                                                     .size(24.dp)
-                                                    .background(Color(0xFF3897F0), CircleShape),
+                                                    .background(Color(0xFFFF8C00), CircleShape),
                                                 contentAlignment = Alignment.Center
                                             ) {
                                                 Icon(
@@ -212,7 +212,7 @@ fun AIReelAssistantScreen(
                             enabled = selectedPhotos.isNotEmpty(),
                             modifier = Modifier.fillMaxWidth().height(50.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF3897F0),
+                                containerColor = Color(0xFFFF8C00),
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(25.dp)
@@ -240,7 +240,7 @@ fun AIReelAssistantScreen(
                                     .padding(vertical = 6.dp)
                                     .border(
                                         width = if (isSelected) 2.dp else 1.dp,
-                                        color = if (isSelected) Color(0xFF3897F0) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                                        color = if (isSelected) Color(0xFFFF8C00) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
                                         shape = RoundedCornerShape(12.dp)
                                     )
                                     .clip(RoundedCornerShape(12.dp))
@@ -250,7 +250,7 @@ fun AIReelAssistantScreen(
                                 Text(
                                     text = template + if (isSelected) " ✨" else "",
                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                    color = if (isSelected) Color(0xFF3897F0) else MaterialTheme.colorScheme.onBackground
+                                    color = if (isSelected) Color(0xFFFF8C00) else MaterialTheme.colorScheme.onBackground
                                 )
                             }
                         }
@@ -279,13 +279,13 @@ fun AIReelAssistantScreen(
                                 Icon(
                                     imageVector = Icons.Default.MusicNote,
                                     contentDescription = null,
-                                    tint = if (isSelected) Color(0xFF3897F0) else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                                    tint = if (isSelected) Color(0xFFFF8C00) else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
                                     text = audio,
                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                                    color = if (isSelected) Color(0xFF3897F0) else MaterialTheme.colorScheme.onBackground
+                                    color = if (isSelected) Color(0xFFFF8C00) else MaterialTheme.colorScheme.onBackground
                                 )
                             }
                         }
@@ -294,7 +294,7 @@ fun AIReelAssistantScreen(
                         Button(
                             onClick = { currentStep = AssistantStep.GENERATING },
                             modifier = Modifier.fillMaxWidth().height(50.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3897F0)),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF8C00)),
                             shape = RoundedCornerShape(25.dp)
                         ) {
                             Text("Generate AI Reel ✨", fontWeight = FontWeight.Bold)
@@ -351,7 +351,7 @@ fun GeneratingScreen(onGenerationDone: () -> Unit) {
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(80.dp),
-                color = Color(0xFF3897F0),
+                color = Color(0xFFFF8C00),
                 strokeWidth = 4.dp
             )
             Text(
@@ -487,7 +487,7 @@ fun PreviewScreen(
         Button(
             onClick = onPublish,
             modifier = Modifier.fillMaxWidth().height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3897F0)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF8C00)),
             shape = RoundedCornerShape(25.dp)
         ) {
             Text("Publish to Feed", fontWeight = FontWeight.Bold)

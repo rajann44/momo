@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualAvatar
 import com.example.momo.UserProfile
 import com.example.momo.ChatDetail
 import com.example.momo.data.DummyData
@@ -203,13 +204,11 @@ fun ActiveUserCircle(
             modifier = Modifier.size(62.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
-            AsyncImage(
-                model = user.avatarUrl,
-                contentDescription = user.username,
+            SpiritualAvatar(
+                avatarUrl = user.avatarUrl,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                    .clip(CircleShape)
             )
             // Green Online Status Dot
             Box(
@@ -277,13 +276,11 @@ fun MessageInboxItem(
             modifier = Modifier.size(54.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
-            AsyncImage(
-                model = message.user.avatarUrl,
-                contentDescription = null,
+            SpiritualAvatar(
+                avatarUrl = message.user.avatarUrl,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                    .clip(CircleShape)
             )
             if (message.user.isOnline) {
                 Box(

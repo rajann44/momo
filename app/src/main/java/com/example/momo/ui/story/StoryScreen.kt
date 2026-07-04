@@ -61,6 +61,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.momo.ui.components.SpiritualAvatar
+import com.example.momo.ui.components.SpiritualArt
 import com.example.momo.data.DummyData
 import com.example.momo.data.StoryItem
 import com.example.momo.data.User
@@ -144,13 +146,11 @@ fun StoryScreen(
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        AsyncImage(
-                            model = activeStory.sharedPostUser?.avatarUrl,
-                            contentDescription = null,
+                         SpiritualAvatar(
+                            avatarUrl = activeStory.sharedPostUser?.avatarUrl ?: "",
                             modifier = Modifier
                                 .size(24.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
+                                .clip(CircleShape)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -168,14 +168,22 @@ fun StoryScreen(
                             .fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        AsyncImage(
-                            model = activeStory.sharedPostImg,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.8f),
-                            contentScale = ContentScale.Fit
-                        )
+                        if (activeStory.sharedPostImg.startsWith("spiritual://")) {
+                            val uri = activeStory.sharedPostImg
+                            val parts = uri.substring("spiritual://".length).split("?hue=")
+                            val artType = parts.getOrNull(0) ?: "MANDALA"
+                            val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                            SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.8f))
+                        } else {
+                            AsyncImage(
+                                model = activeStory.sharedPostImg,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(0.8f),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
                     }
                     
                     // Bottom space (empty space to match mock design height)
@@ -184,12 +192,20 @@ fun StoryScreen(
             }
         } else {
             // Standard Full-screen Image Story
-            AsyncImage(
-                model = activeStory.imageUrl,
-                contentDescription = "Story Media",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            if (activeStory.imageUrl.startsWith("spiritual://")) {
+                val uri = activeStory.imageUrl
+                val parts = uri.substring("spiritual://".length).split("?hue=")
+                val artType = parts.getOrNull(0) ?: "MANDALA"
+                val hue = parts.getOrNull(1)?.toFloatOrNull() ?: 0f
+                SpiritualArt(artType = artType, hue = hue, modifier = Modifier.fillMaxSize())
+            } else {
+                AsyncImage(
+                    model = activeStory.imageUrl,
+                    contentDescription = "Story Media",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
 
         // 2. Navigation Click Overlay (Left 40% goes Back, Right 60% goes Forward)
@@ -268,13 +284,11 @@ fun StoryScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        AsyncImage(
-                            model = user.avatarUrl,
-                            contentDescription = "User Avatar",
+                        SpiritualAvatar(
+                            avatarUrl = user.avatarUrl,
                             modifier = Modifier
                                 .size(32.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
+                                .clip(CircleShape)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
