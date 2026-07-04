@@ -1,22 +1,38 @@
 package com.example.momo.ui.welcome
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -33,70 +49,193 @@ fun WelcomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF0A0A0A)) // Deep pure black
+            .background(Color(0xFF070708)) // Deep pure spiritual black/dark slate
             .padding(horizontal = 24.dp, vertical = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        // Top Spacer
-        Spacer(modifier = Modifier.height(40.dp))
-
-        // Center Content: Glowing logo & tagline
+        // Top section: App name and subtitle
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.padding(top = 24.dp)
         ) {
-            // Elegant glowing gradient typography for "momo"
-            val textGradient = Brush.linearGradient(
+            val titleGradient = Brush.linearGradient(
                 colors = listOf(
-                    Color(0xFFF96167), // Coral Pink
-                    Color(0xFFF9A15E), // Orange/Gold
-                    Color(0xFFE94B8A)  // Deep Pink
+                    Color(0xFFFFD700), // Divine Gold
+                    Color(0xFFFF8C00), // Dark Orange
+                    Color(0xFFFF4500)  // Saffron/Crimson
                 )
             )
 
             Text(
-                text = "momo",
+                text = "Momo",
                 style = TextStyle(
-                    brush = textGradient,
-                    fontSize = 72.sp,
+                    brush = titleGradient,
+                    fontSize = 54.sp,
                     fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif,
-                    letterSpacing = (-2).sp
+                    letterSpacing = (-1).sp
                 ),
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Share your genuine moments.",
+                text = "Your Mahabharata Spiritual Journey",
                 fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.White.copy(alpha = 0.5f),
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFFFFD700).copy(alpha = 0.85f),
+                letterSpacing = 1.sp,
                 textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "A 30-day journey of wisdom, duty, and self-realization.",
+                fontSize = 13.sp,
+                color = Color.White.copy(alpha = 0.5f),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
 
-        // Bottom Content: Get Started Button
-        Button(
-            onClick = onGetStartedClick,
+        // Center section: Core info features cards
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(54.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-            shape = RoundedCornerShape(50.dp) // Premium iOS pill shape
+                .weight(1f)
+                .padding(vertical = 24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, Color(0xFFFFD700).copy(alpha = 0.15f), RoundedCornerShape(16.dp)),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFF121214) // Dark card
+                ),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "WHAT TO EXPECT",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFFD700),
+                        letterSpacing = 2.sp
+                    )
+
+                    InfoRow(
+                        icon = Icons.Default.MenuBook,
+                        title = "Daily Gita Verses",
+                        description = "Meditate on Sanskrit verses & translations directly from the battlefield of Kurukshetra."
+                    )
+
+                    InfoRow(
+                        icon = Icons.Default.AutoAwesome,
+                        title = "Epic Narrative Posts",
+                        description = "Scroll a daily-changing feed of posts from Yudhisthira, Arjuna, Karna, Shakuni, and Lord Krishna."
+                    )
+
+                    InfoRow(
+                        icon = Icons.Default.Chat,
+                        title = "Guided Dialogues",
+                        description = "Receive personalized messages and advice from characters in your inbox."
+                    )
+
+                    InfoRow(
+                        icon = Icons.Default.Bookmark,
+                        title = "Saved Teachings",
+                        description = "Bookmark shlokas and guidance to build your own profile of eternal wisdom."
+                    )
+                }
+            }
+        }
+
+        // Bottom section: Get Started button
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = onGetStartedClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFD700), // Divine Gold Button
+                    contentColor = Color(0xFF070708) // Dark Text
+                ),
+                shape = RoundedCornerShape(50.dp)
+            ) {
+                Text(
+                    text = "Begin Journey",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Text(
-                text = "Get Started",
-                fontSize = 16.sp,
+                text = "Perform your duty with a calm mind.",
+                fontSize = 12.sp,
+                fontStyle = FontStyle.Italic,
+                color = Color.White.copy(alpha = 0.35f),
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun InfoRow(
+    icon: ImageVector,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .background(Color(0xFFFFD700).copy(alpha = 0.1f), CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = Color(0xFFFFD700),
+                modifier = Modifier.size(16.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 0.5.sp
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = description,
+                fontSize = 12.sp,
+                color = Color.White.copy(alpha = 0.6f),
+                lineHeight = 16.sp
             )
         }
     }
