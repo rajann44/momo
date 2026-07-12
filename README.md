@@ -9,7 +9,6 @@ DharmaFeed is a premium spiritual application built natively with Jetpack Compos
 <p align="center">
   <img src="./assets/welcome.png" width="280" alt="DharmaFeed Onboarding" />
   <img src="./assets/feed.png" width="280" alt="DharmaFeed Daily Feed" />
-  <img src="./assets/profile.png" width="280" alt="DharmaFeed Profile" />
 </p>
 
 ---
